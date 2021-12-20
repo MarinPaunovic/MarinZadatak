@@ -1,0 +1,19 @@
+.Pagination {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.Pagination button {
+  border: none;
+  background-color: white;
+  font-size: 20px;
+  margin-top: 20px;
+  cursor: pointer;
+  margin-left: 15px;
+  margin-bottom: 15px;
+}
+
+.Pagination button:hover {
+  color: lightgray;
+}

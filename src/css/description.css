@@ -1,0 +1,15 @@
+.Description {
+  display: grid;
+  grid-template-columns: 15% 25% 15% 25% 5% 5%;
+  margin-left: 25px;
+  justify-content: space-between;
+  justify-items: center;
+}
+
+.Description button {
+  font-style: normal;
+  cursor: pointer;
+  border: none;
+  background-color: white;
+  font-size: 25px;
+}

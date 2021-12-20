@@ -1,0 +1,13 @@
+@import "description.css";
+@import "add.css";
+@import "navbar.css";
+@import "list.css";
+@import "search.css";
+@import "edit.css";
+@import "pagination.css";
+
+* {
+  margin: 0px;
+  padding: 0px;
+  text-decoration: none;
+}

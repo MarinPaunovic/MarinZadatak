@@ -1,0 +1,43 @@
+.AddEdit {
+  font-size: 26px;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  margin-top: 20px;
+  align-items: center;
+}
+.AddEdit input {
+  width: 25%;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding: 10px;
+  font-size: 15px;
+}
+
+.AddMessage {
+  display: block;
+  margin-top: 20px;
+}
+.CoinAdded {
+  display: none;
+  padding: 15px;
+  font-size: 20px;
+  border-radius: 10px;
+  color: #4c880c;
+  background-color: #dff2bf;
+}
+.EmptyFields {
+  display: none;
+  padding: 15px;
+  color: #d8000c;
+  background-color: #ffd2d2;
+  font-size: 20px;
+  border-radius: 10px;
+}
+
+.AddEdit button {
+  font-size: 20px;
+  padding: 5px;
+  width: fit-content;
+  height: fit-content;
+}

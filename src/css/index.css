@@ -7,6 +7,7 @@
 @import "pagination.css";
 
 * {
+  font-family: cursive;
   margin: 0px;
   padding: 0px;
   text-decoration: none;

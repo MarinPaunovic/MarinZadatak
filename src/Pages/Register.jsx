@@ -1,0 +1,26 @@
+import { createUserWithEmailAndPassword } from "firebase/auth"
+import {useState} from "react"
+import { auth } from "../db/firebase";
+
+export const Register = () =>{
+const[email,setEmail]=useState("");
+const[password,setPassword]=useState("");
+
+const register = ()=>{
+    createUserWithEmailAndPassword(auth,email,password);
+    document.getElementById("email").value= "";
+    document.getElementById("password").value= "";
+}
+
+
+
+    return(
+    <div>
+        <label>Email</label>
+<input onChange={(e)=>setEmail(e.target.value) }id="email"></input>
+<label>Password</label>
+<input onChange={(e)=>setPassword(e.target.value)} id="password"></input>
+<button onClick={register}>Register</button>
+    </div>)
+}
+

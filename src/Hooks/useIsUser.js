@@ -1,4 +1,4 @@
-import AuthUser from "../Classes/AuthUser";
+import AuthUser from "../Pages/User/Auth/AuthUser";
 import { useEffect, useState } from "react";
 
 export const useIsUser = () => {

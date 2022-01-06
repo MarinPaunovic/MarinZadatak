@@ -1,17 +1,17 @@
 import { makeAutoObservable } from "mobx";
 
 class OrderBy {
-  Order = "";
-  Counter = 0;
+  order = "";
+  counter = 0;
 
   constructor() {
     makeAutoObservable(this);
   }
   setOrder(order) {
-    this.Order = order;
+    this.order = order;
   }
   setCounter(counter) {
-    this.Counter = counter;
+    this.counter = counter;
   }
 }
 

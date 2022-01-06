@@ -1,11 +1,11 @@
-import Crypto from "../Classes/List";
+import Crypto from "../List/List";
 import { observer } from "mobx-react";
-import Page from "../Classes/Page";
-import Search from "../Classes/Search";
+import Page from "./Page";
+import Search from "../../../Pages/Coin/Search/Search";
 
 export const Pagination = observer(() => {
   const abc = [];
-  const oListNumber = Crypto.List.length;
+  const oListNumber = Crypto.list.length;
   const test = Math.ceil(oListNumber / 5);
   for (let i = 1; test >= i; i++) {
     abc.push({ i });

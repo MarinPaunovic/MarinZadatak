@@ -1,21 +1,21 @@
-import Crypto from "../Classes/List";
+import Crypto from "../List/List";
 import { observer } from "mobx-react";
-import Search from "../Classes/Search";
-import EditItemId from "../Classes/Edit";
+import Search from "./Search";
+import EditItemId from "../Edit/Edit";
 
 export const SearchItem = observer(() => {
   const handleChange = (sValue) => {
     Search.setItem(sValue);
     let newList = [];
     let test = 0;
-    Crypto.List.filter((value) =>
-      value.Ime.toLowerCase().includes(Search.item.toLocaleLowerCase()) ||
-      value.Kratica.toLowerCase().includes(Search.item.toLocaleLowerCase())
+    Crypto.list.filter((value) =>
+      value.name.toLowerCase().includes(Search.item.toLocaleLowerCase()) ||
+      value.tag.toLowerCase().includes(Search.item.toLocaleLowerCase())
         ? (newList.push({
-            Ime: value.Ime,
-            Kratica: value.Kratica,
-            Price: value.Price,
-            MarketCap: value.MarketCap,
+            name: value.name,
+            tag: value.tag,
+            price: value.price,
+            marketCap: value.marketCap,
             id: value.id,
           }),
           Crypto.setSearchList(newList),

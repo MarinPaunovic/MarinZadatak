@@ -5,6 +5,8 @@
 @import "search.css";
 @import "edit.css";
 @import "pagination.css";
+@import "getComment.css";
+@import "addComment.css";
 
 * {
   font-family: cursive;

@@ -1,60 +1,61 @@
-import AddNewList from "../Classes/Add";
-import { db } from "../db/firebase";
+import AddNewList from "./AddStore";
+import { db } from "../../../db/firebase";
 import { collection, addDoc } from "firebase/firestore";
 import { observer } from "mobx-react";
 import React, { useEffect } from "react";
-import Timer from "../Classes/Timer";
+import Timer from "./Timer";
+import Style from "../../../Classes/Style";
 
 export const AddItem = observer(() => {
   const submit = (e) => {
     e.preventDefault();
-    if (AddNewList.Ime && AddNewList.Kratica && AddNewList.Price && AddNewList.MarketCap) {
-      if (!isNaN(AddNewList.Price) && !isNaN(AddNewList.MarketCap)) {
+    if (AddNewList.name && AddNewList.tag && AddNewList.price && AddNewList.marketCap) {
+      if (!isNaN(AddNewList.price) && !isNaN(AddNewList.marketCap)) {
         addDoc(collection(db, "Crypto"), {
-          Ime: AddNewList.Ime,
-          Kratica: AddNewList.Kratica,
-          Price: AddNewList.Price,
-          MarketCap: AddNewList.MarketCap,
+          name: AddNewList.name,
+          tag: AddNewList.tag,
+          price: AddNewList.price,
+          marketCap: AddNewList.marketCap,
         });
-        AddNewList.setIme("");
-        AddNewList.setKratica("");
+        AddNewList.setName("");
+        AddNewList.setTag("");
         AddNewList.setPrice("");
         AddNewList.setMarketCap("");
-        document.getElementById("imeInput").value = "";
-        document.getElementById("kraticaInput").value = "";
-        document.getElementById("priceInput").value = "";
-        document.getElementById("marketCapInput").value = "";
+        Style.setValue("nameInput", "");
+        Style.setValue("tagInput", "");
+        Style.setValue("priceInput", "");
+        Style.setValue("marketCapInput", "");
         let id1 = setTimeout(function () {
-          document.getElementById("CoinAdded").style.display = "block";
+          Style.setDisplay("CoinAdded", "block");
         }, 200);
         Timer.setTestId1(id1);
         let id2 = setTimeout(function () {
-          document.getElementById("CoinAdded").style.display = "none";
+          Style.setDisplay("CoinAdded", "none");
         }, 2000);
         Timer.setTestId2(id2);
-        document.getElementById("priceInput").style.borderColor = "";
-        document.getElementById("marketCapInput").style.borderColor = "";
+        Style.setBorderColor("priceInput", "");
+        Style.setBorderColor("marketCapInput", "");
       } else {
-        if (isNaN(AddNewList.Price)) {
-          document.getElementById("priceInput").style.borderColor = "red";
-          alert("Price filed must be a NUMBER");
+        if (isNaN(AddNewList.price)) {
+          Style.setBorderColor("priceInput", "red");
+          alert("Price field must be a NUMBER");
         } else {
-          document.getElementById("priceInput").style.borderColor = "";
+          Style.setBorderColor("priceInput", "");
         }
-        if (isNaN(AddNewList.MarketCap)) {
-          document.getElementById("marketCapInput").style.borderColor = "red";
-          alert("Market Cap filed must be a NUMBER");
+        if (isNaN(AddNewList.marketCap)) {
+          Style.setBorderColor("marketCapInput", "red");
+          alert("Market Cap field must be a NUMBER");
         } else {
-          document.getElementById("marketCapInput").style.borderColor = "";
+          Style.setBorderColor("marketCapInput", "");
         }
       }
     } else {
       let id3 = setTimeout(function () {
-        document.getElementById("EmptyFields").style.display = "block";
+        Style.setDisplay("EmptyFields", "block");
       }, 200);
       Timer.setTestId3(id3);
       let id4 = setTimeout(function () {
-        document.getElementById("EmptyFields").style.display = "none";
+        Style.setDisplay("EmptyFields", "none");
       }, 2000);
       Timer.setTestId4(id4);
     }
@@ -70,21 +71,21 @@ export const AddItem = observer(() => {
 
   return (
     <div className="AddEdit">
-      <label>Ime</label>
+      <label>Name</label>
       <input
         type="text"
         onChange={(e) => {
-          AddNewList.setIme(e.target.value);
+          AddNewList.setName(e.target.value);
         }}
-        id="imeInput"
+        id="nameInput"
       ></input>
-      <label> Kratica</label>
+      <label> Tag</label>
       <input
         type="text"
         onChange={(e) => {
-          AddNewList.setKratica(e.target.value);
+          AddNewList.setTag(e.target.value);
         }}
-        id="kraticaInput"
+        id="tagInput"
       ></input>
       <label>Price</label>
       <input
@@ -105,7 +106,7 @@ export const AddItem = observer(() => {
         id="marketCapInput"
       ></input>
 
-      <div className="button">
+      <div className="Button">
         <form onSubmit={submit}>
           <button type="Submit" value="Submit">
             Add

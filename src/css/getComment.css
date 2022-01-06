@@ -1,0 +1,53 @@
+.GetComment {
+  border-style: none;
+  position: absolute;
+  right: 20px;
+  background-color: white;
+  cursor: pointer;
+}
+
+.Comments {
+  justify-content: space-between;
+  display: none;
+  word-break: keep-all;
+  grid-template-columns: 15% 60% 25%;
+  border-style: groove;
+  border-color: black(255, 255, 255, 0.267);
+  min-height: 75px;
+  padding-left: 15px;
+  margin-left: 10px;
+  text-align: center;
+}
+
+.Edit {
+  margin-right: 15px;
+}
+
+.Delete {
+  margin-right: 15px;
+}
+.UserWrap {
+  position: relative;
+  left: 30px;
+  top: 10%;
+  width: fit-content;
+  height: fit-content;
+  text-align: center;
+}
+.CommentButtons {
+  align-self: center;
+  justify-self: center;
+}
+.CreatedAt {
+  font-size: 15px;
+}
+.User {
+  font-size: 25px;
+}
+
+.CommentsWrapper {
+  margin-top: 28px;
+}
+.Comment {
+  align-self: center;
+}

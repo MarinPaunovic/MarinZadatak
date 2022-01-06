@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { signOut } from "firebase/auth";
 import { auth } from "../db/firebase";
-import AuthUser from "../Classes/AuthUser";
+import AuthUser from "../Pages/User/Auth/AuthUser";
 import { observer } from "mobx-react";
 import { useIsUser } from "../Hooks/useIsUser";
 

@@ -1,8 +1,8 @@
 import { makeAutoObservable } from "mobx";
 
 class Crypto {
-  List = [];
-  SearchList = [];
+  list = [];
+  searchList = [];
   pageList = [];
   renderAfterEdit = true;
 
@@ -11,10 +11,10 @@ class Crypto {
   }
 
   setList(newList) {
-    return (this.List = newList);
+    this.list = newList;
   }
   setSearchList(newList) {
-    this.SearchList = newList;
+    this.searchList = newList;
   }
 
   setPageList(newList) {

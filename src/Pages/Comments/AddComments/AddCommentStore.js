@@ -1,29 +1,33 @@
 import { makeAutoObservable } from "mobx";
+import { addDoc, collection } from "firebase/firestore";
+import { db } from "../../../db/firebase";
 
 class AddCommentStore {
-  userId;
-  user;
-  commentId;
-  comment;
-  createdAt;
+  content;
+  toggle = false;
 
   constructor() {
     makeAutoObservable(this);
   }
-  setUserId(userId) {
-    this.userId = userId;
+  setContent(content) {
+    this.content = content;
   }
-  setUser(user) {
-    this.user = user;
+
+  setToggle() {
+    this.toggle = !this.toggle;
   }
-  setComment(comment) {
-    this.comment = comment;
-  }
-  setCreatedAt(createdAt) {
-    this.createdAt = createdAt;
-  }
-  setCommentId(id) {
-    this.commentId = id;
+  setComment(id, content) {
+    addDoc(collection(db, "Comments"), {
+      coinId: id,
+      comment: content,
+      createdAt: new Date().toLocaleDateString(undefined, {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+      }),
+    });
   }
 }
 

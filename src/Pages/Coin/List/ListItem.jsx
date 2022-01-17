@@ -8,12 +8,12 @@ import OrderBy from "../../../Pages/Coin/Description/OrderBy";
 import Page from "../Pagination/Page";
 import { Link } from "react-router-dom";
 import AuthUser from "../../User/Auth/AuthUser";
-import { userAuth } from "../../../Functions/userAuth";
+// import { userAuth } from "../../../Functions/userAuth";
 import Style from "../../../Classes/Style";
 import { GetComments } from "../../Comments/GetComments/GetComments";
 
 export const ListItem = observer(() => {
-  const authState = userAuth();
+  // const authState = userAuth();
 
   const getSetList = () => {
     onSnapshot(
@@ -100,13 +100,12 @@ export const ListItem = observer(() => {
                 <div>{item.tag} </div>
                 <div>{item.price} $</div>
                 <div>{item.marketCap} $ </div>
-                {authState && (
-                  <>
-                    {" "}
-                    <Link to={`/edit/${item.id}`}>Edit</Link>
-                    <button onClick={() => handleClickDelete(item.id)}>Delete</button>
-                  </>
-                )}
+
+                <>
+                  {" "}
+                  <Link to={`/edit/${item.id}`}>Edit</Link>
+                  <button onClick={() => handleClickDelete(item.id)}>Delete</button>
+                </>
               </div>
               <GetComments id={item.id} />
             </div>
@@ -117,13 +116,12 @@ export const ListItem = observer(() => {
               <div>{item.tag} </div>
               <div>{item.price} $</div>
               <div>{item.marketCap} $ </div>
-              {authState && (
-                <>
-                  {" "}
-                  <Link to={`/edit/${item.id}`}>Edit</Link>
-                  <button onClick={() => handleClickDelete(item.id)}>Delete</button>
-                </>
-              )}
+
+              <>
+                {" "}
+                <Link to={`/edit/${item.id}`}>Edit</Link>
+                <button onClick={() => handleClickDelete(item.id)}>Delete</button>
+              </>
             </div>
           ))}
     </div>

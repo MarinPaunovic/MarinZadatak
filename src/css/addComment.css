@@ -1,12 +1,10 @@
 .AddCommentButton {
-  display: none;
-  position: absolute;
-  right: 50px;
-  margin-top: 2px;
+  padding: 2px 5px 2px 5px;
+  border-radius: 5px;
+  border-width: 0.5px;
 }
-
 .AddCommentWrapper {
-  display: none;
+  display: block;
   z-index: 1;
   background-color: rgba(66, 66, 66, 0.226);
   position: absolute;
@@ -45,10 +43,4 @@
   height: 100px;
   width: 350px;
   resize: none;
-}
-.CloseAddCommentButton {
-  position: absolute;
-  right: 15px;
-  top: 0px;
-  cursor: pointer;
 }

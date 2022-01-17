@@ -9,6 +9,7 @@ import { Edit } from "./Pages/Coin/Edit/Edit.jsx";
 import { auth } from "./db/firebase";
 import { onAuthStateChanged } from "firebase/auth";
 import AuthUser from "./Pages/User/Auth/AuthUser";
+import { Comment } from "./Pages/Comments/Comment/Comment";
 
 function App() {
   onAuthStateChanged(auth, (user) => {
@@ -26,6 +27,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/edit/:editid" element={<Edit />} />
+        <Route path="/comments/:commentId" element={<Comment />} />
       </Routes>
     </Router>
   );

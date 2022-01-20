@@ -3,9 +3,17 @@ import DeleteCommentStore from "./DeleteCommentStore";
 
 const DeleteComment = observer((commentId) => {
   return (
-    <button className="DeleteComment" onClick={() => DeleteCommentStore.setDelete(commentId)}>
-      Delete
-    </button>
+    <>
+      <button
+        className="DeleteComment"
+        onClick={() => {
+          DeleteCommentStore.setDeleteAction(true);
+          DeleteCommentStore.setDeleteId(commentId);
+        }}
+      >
+        Delete
+      </button>
+    </>
   );
 });
 

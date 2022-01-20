@@ -1,7 +1,6 @@
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useState } from "react";
 import { auth } from "../../../db/firebase";
-import Style from "../../../Classes/Style";
 
 export const Register = () => {
   const [email, setEmail] = useState("");
@@ -9,8 +8,8 @@ export const Register = () => {
 
   const register = () => {
     createUserWithEmailAndPassword(auth, email, password);
-    Style.setValue("email", "");
-    Style.setValue("password", "");
+    // Style.setValue("email", "");
+    // Style.setValue("password", "");
   };
 
   return (

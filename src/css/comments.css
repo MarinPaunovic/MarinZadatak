@@ -1,0 +1,140 @@
+.GetComment {
+  border-style: none;
+  position: absolute;
+  right: 20px;
+  background-color: white;
+  cursor: pointer;
+}
+
+.GetCommentButton {
+  display: none;
+  position: absolute;
+  right: 50px;
+  margin-top: 2px;
+  color: black;
+  border: black;
+  border-style: solid;
+  border-width: 0.5px;
+  border-radius: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  font-size: 17px;
+  background-color: rgb(237, 237, 237);
+}
+.GetCommentButton:hover {
+  color: black;
+}
+
+.CommentButtons {
+  align-self: center;
+  justify-self: center;
+}
+
+.CommentWrapper {
+  align-items: center;
+  text-align: center;
+}
+.CommentCoinName {
+  margin-top: 20px;
+}
+
+.EachComment {
+  border-style: solid;
+  border-width: 0.5px;
+  margin-top: 15px;
+  min-height: 65px;
+  margin-left: 15px;
+  margin-right: 15px;
+  display: grid;
+  grid-template-rows: 25% 75%;
+  grid-template-columns: 25% 50% 12.5% 12.5%;
+}
+
+.DeleteComment {
+  grid-row: 1 / 3;
+  grid-column: 3;
+  width: fit-content;
+  height: fit-content;
+  justify-self: center;
+  align-self: center;
+}
+.EditComment {
+  grid-row: 1 / 3;
+  grid-column: 4;
+  width: fit-content;
+  height: fit-content;
+  justify-self: center;
+  align-self: center;
+}
+.EachComment button {
+  padding-left: 5px;
+  padding-right: 5px;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  border-radius: 5px;
+  border-width: 0.5px;
+}
+.CommentCoinName {
+  text-align: center;
+  font-size: 25px;
+}
+.CoinCommentChoice {
+  width: fit-content;
+  margin-left: 20px;
+}
+
+.CoinCommentChoiceContent {
+  display: none;
+  position: absolute;
+  margin-left: -34.9px;
+  flex-direction: column;
+  background-color: lightgray;
+  border-style: solid;
+  border-width: 0.5px;
+  border-bottom: none;
+  min-width: 150px;
+  cursor: pointer;
+  text-align: center;
+}
+.CoinCommentChoiceButton {
+  justify-self: center;
+  border-radius: 5px;
+  border-width: 0.5px;
+  width: fit-content;
+  padding: 2.5px 5px 2.5px 5px;
+}
+
+.CoinCommentChoiceContent a {
+  padding: 2.5px;
+  border-style: solid;
+  border-width: 0.2px;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  color: black;
+}
+.CoinCommentChoiceContent a:hover {
+  background-color: ivory;
+}
+
+.CoinCommentChoice:hover .CoinCommentChoiceContent {
+  display: flex;
+}
+
+.CommentButtonWrapper {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  width: fit-content;
+  margin: 0 auto;
+}
+
+.CommentTimestamp {
+  font-size: 12px;
+  margin-top: 5px;
+}
+.CommentContent {
+  height: fit-content;
+  width: fit-content;
+  padding: 10px;
+}

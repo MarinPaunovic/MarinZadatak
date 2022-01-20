@@ -1,5 +1,5 @@
 import { makeAutoObservable } from "mobx";
-
+import Crypto from "../List/ListStore";
 class OrderBy {
   order = "";
   counter = 0;
@@ -9,9 +9,8 @@ class OrderBy {
   }
   setOrder(order) {
     this.order = order;
-  }
-  setCounter(counter) {
-    this.counter = counter;
+    this.counter = this.counter + 1;
+    Crypto.setAction();
   }
 }
 

@@ -1,27 +1,25 @@
-import Crypto from "../List/List";
+import Crypto from "../List/ListStore";
 import { observer } from "mobx-react";
-import Page from "./Page";
-import Search from "../../../Pages/Coin/Search/Search";
+import Search from "../Search/SearchStore";
+import PaginationStore from "./PaginationStore";
+import { useEffect } from "react";
 
 export const Pagination = observer(() => {
-  const abc = [];
-  const oListNumber = Crypto.list.length;
-  const test = Math.ceil(oListNumber / 5);
-  for (let i = 1; test >= i; i++) {
-    abc.push({ i });
-  }
-
-  const handlePages = (index) => {
-    Page.setPageNumber(index);
-  };
+  useEffect(() => {
+    PaginationStore.getPages(Crypto.list.length);
+    return () => {
+      PaginationStore.setPages([]);
+    };
+  }, [Crypto.action]);
 
   return (
     <div className="Pagination">
       {!Search.item &&
-        abc.map((index, x) => {
+        PaginationStore.pages &&
+        PaginationStore.pages.map((index, x) => {
           return (
-            <button key={x} onClick={() => handlePages(index.i)}>
-              {index.i}
+            <button key={x} onClick={() => PaginationStore.setPageNumber(index)}>
+              {index}
             </button>
           );
         })}

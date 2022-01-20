@@ -1,41 +1,45 @@
+import { observer } from "mobx-react";
 import { useParams } from "react-router-dom";
-import { doc, getDoc, updateDoc } from "firebase/firestore";
-import { db } from "../../../db/firebase";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
+import EditStore from "./EditStore";
 
-export const Edit = () => {
+export const Edit = observer(() => {
   const { editid } = useParams();
-  const [name, setName] = useState("");
-  const [tag, setTag] = useState("");
-  const [price, setPrice] = useState("");
-  const [marketCap, setMarketCap] = useState("");
 
   useEffect(() => {
-    return getDoc(doc(db, "Crypto", editid)).then((value) => {
-      setName(value.data().name);
-      setTag(value.data().tag);
-      setPrice(value.data().price);
-      setMarketCap(value.data().marketCap);
-    });
+    EditStore.getEdit(editid);
+    EditStore.setItemId(editid);
+    return () => {
+      EditStore.setItemId("");
+      EditStore.setName("");
+      EditStore.setTag("");
+      EditStore.setPrice(null);
+      EditStore.setMarketCap(null);
+    };
   }, []);
-
-  const clickEdit = (e) => {
-    e.preventDefault();
-    updateDoc(doc(db, "Crypto", editid), {
-      name: name,
-      tag: tag,
-      price: price,
-      marketCap: marketCap,
-    });
-  };
-
   return (
-    <div>
-      <input defaultValue={name} onChange={(e) => setName(e.target.value)}></input>
-      <input defaultValue={tag} onChange={(e) => setTag(e.target.value)}></input>
-      <input defaultValue={price} onChange={(e) => setPrice(e.target.value)}></input>
-      <input defaultValue={marketCap} onChange={(e) => setMarketCap(e.target.value)}></input>
-      <button onClick={clickEdit}>Edit</button>
-    </div>
+    <>
+      {EditStore.itemId && (
+        <div>
+          <input
+            defaultValue={EditStore.name}
+            onChange={(e) => EditStore.setName(e.target.value)}
+          ></input>
+          <input
+            defaultValue={EditStore.tag}
+            onChange={(e) => EditStore.setTag(e.target.value)}
+          ></input>
+          <input
+            defaultValue={EditStore.price}
+            onChange={(e) => EditStore.setPrice(e.target.value)}
+          ></input>
+          <input
+            defaultValue={EditStore.marketCap}
+            onChange={(e) => EditStore.setMarketCap(e.target.value)}
+          ></input>
+          <button onClick={() => EditStore.setEdit(editid)}>Edit</button>
+        </div>
+      )}
+    </>
   );
-};
+});

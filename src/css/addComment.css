@@ -44,3 +44,11 @@
   width: 350px;
   resize: none;
 }
+
+.testBorderR {
+  border-color: red;
+}
+
+.testBorderB {
+  border-color: none;
+}

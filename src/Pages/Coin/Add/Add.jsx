@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { AddItem } from "./AddItem";
-import { userAuth } from "../../../Functions/userAuth";
+// import { userAuth } from "../../../Functions/userAuth";
 // import { useNavigate } from "react-router-dom";
 
 const AddToList = () => {

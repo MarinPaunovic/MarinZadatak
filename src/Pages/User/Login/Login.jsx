@@ -4,7 +4,6 @@ import { auth } from "../../../db/firebase";
 import AuthUser from "../../User/Auth/AuthUser";
 import { useNavigate } from "react-router-dom";
 import { observer } from "mobx-react";
-import Style from "../../../Classes/Style";
 
 export const Login = observer(() => {
   const [email, setEmail] = useState("");
@@ -17,10 +16,10 @@ export const Login = observer(() => {
     try {
       userSignIn = await signInWithEmailAndPassword(auth, email, password);
     } catch (e) {
-      Style.setDisplay("Message", "inline");
+      //style
     }
     if (userSignIn) {
-      Style.setDisplay("Message", "none");
+      //Style.setDisplay("Message", "none");
       setLoading(false);
       AuthUser.setUserAuth(true);
       navigate("/");

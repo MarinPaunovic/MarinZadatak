@@ -22,7 +22,9 @@ class Crypto {
   constructor() {
     makeAutoObservable(this);
   }
-
+  setSearchValue() {
+    this.searchValue = true;
+  }
   setList(newList) {
     this.list = newList;
   }

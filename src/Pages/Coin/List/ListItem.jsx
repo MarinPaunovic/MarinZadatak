@@ -16,6 +16,7 @@ export const ListItem = observer(() => {
     PaginationStore.setPagination();
     return () => {
       SearchStore.setItem("");
+      Crypto.setSearchValue();
     };
   }, [Crypto.action, PaginationStore.pageNumber]);
 

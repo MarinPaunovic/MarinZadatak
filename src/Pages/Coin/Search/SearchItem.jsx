@@ -7,7 +7,7 @@ export const SearchItem = observer(() => {
     <div className="SearchBar" id="SearchBarId">
       <input
         type="text"
-        value={Crypto.searchValue ? undefined : ""}
+        value={Crypto.searchValue ? SearchStore.item : ""}
         onChange={(e) => SearchStore.setSearch(e.target.value)}
         placeholder="Search.."
       ></input>

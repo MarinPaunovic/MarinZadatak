@@ -12,11 +12,11 @@ import AuthUser from "./Pages/User/Auth/AuthUser";
 import { Comment } from "./Pages/Comments/Comment/Comment";
 
 function App() {
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      AuthUser.setUserAuth(true);
-    } else AuthUser.setUserAuth(false);
-  });
+  // onAuthStateChanged(auth, (user) => {
+  //   if (user) {
+  //     AuthUser.setUserAuth(true);
+  //   } else AuthUser.setUserAuth(false);
+  // });
 
   return (
     <Router>

@@ -78,14 +78,18 @@ export const AddItem = observer(() => {
         <span
           className="CoinAdded"
           id="CoinAdded"
-          style={AddStore.addDisplay ? { display: "block" } : { display: "none" }}
+          style={
+            AddStore.addDisplay ? { display: "block" } : { display: "none" }
+          }
         >
           Coin added!
         </span>
         <span
           className="EmptyFields"
           id="EmptyFields"
-          style={AddStore.failDisplay ? { display: "block" } : { display: "none" }}
+          style={
+            AddStore.failDisplay ? { display: "block" } : { display: "none" }
+          }
         >
           Some fields are empty!
         </span>

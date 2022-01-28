@@ -10,6 +10,9 @@ class DeleteComment {
   constructor() {
     makeAutoObservable(this);
   }
+  setDeleteConfirmation() {
+    this.deleteConfirmation = false;
+  }
   setDeleteAction(bool) {
     this.deleteAction = bool;
   }
@@ -22,6 +25,7 @@ class DeleteComment {
   setDelete(id) {
     deleteDoc(doc(db, "Comments", id));
     this.deleteAction = !this.deleteAction;
+    this.deleteConfirmation = true;
   }
 }
 

@@ -5,14 +5,18 @@ import { db } from "../../../db/firebase";
 class AddCommentStore {
   content;
   toggle = false;
+  addAction = false;
 
   constructor() {
     makeAutoObservable(this);
+    this.addAction = false;
   }
   setContent(content) {
     this.content = content;
   }
-
+  setAddAction() {
+    this.addAction = false;
+  }
   setToggle() {
     this.toggle = !this.toggle;
   }
@@ -28,6 +32,7 @@ class AddCommentStore {
         minute: "2-digit",
       }),
     });
+    this.addAction = true;
   }
 }
 

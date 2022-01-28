@@ -1,44 +1,54 @@
-.EditItem {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.2);
-}
-.EditItemInner {
-  color: white;
-  padding: 60px 90px 60px 90px;
-  right: 50%;
-  top: 22%;
-  position: fixed;
-  font-size: 20px;
-  background: gray;
-  text-align: center;
-  margin-right: -193px;
-}
 
-.EditItem input {
+.EditWrapper{
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+  margin:0 auto;
+
+}
+.EditWrapper input{
+  width: 25%;
+  padding: 10px;
   font-size: 15px;
+  margin-top:8px;
+}
+.EditWrapper button{
+  font-size: 20px;
+  padding: 5px;
+  width: fit-content;
+  height: fit-content;
+  margin-top:10px;
+}
+.EditWrapper label{
+  font-size: 26px;
   display: flex;
   flex-direction: column;
-  margin-top: 10px;
-  margin-bottom: 10px;
-  padding: 5px;
+  text-align: center;
+  margin-top: 20px;
+  align-items: center;
 }
-
-.EditItem button {
-  padding: 5px;
-}
-
-.CloseEdit {
+.CoinEditCompleted{
+  display: block;
+  padding: 15px;
   font-size: 20px;
-  cursor: pointer;
-  color: black;
-  position: absolute;
-  border-style: none;
-  background-color: lightgray;
-  right: 20px;
-  top: 15px;
+  border-radius: 10px;
+  color: #4c880c;
+  background-color: #dff2bf;
+  width:fit-content;
+  margin: 0 auto;
+  margin-top:10px;
+}
+.NoDisplay{
+  display:none;
+}
+.CoinEditFailed{
+  display: block;
+  padding: 15px;
+  font-size: 20px;
+  border-radius: 10px;
+  color: #d8000c;
+  background-color: #ffd2d2;
+  width:fit-content;
+  margin: 0 auto;
+  margin-top:10px;
 }

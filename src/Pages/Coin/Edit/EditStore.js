@@ -1,15 +1,25 @@
-import { makeAutoObservable } from "mobx";
+import { makeAutoObservable, runInAction } from "mobx";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { db } from "../../../db/firebase";
+
 class EditItemId {
   itemId = "";
   name = "";
   tag = "";
   price = null;
   marketCap = null;
+  editCompleted = false;
+  editFailed = false;
+  action = false;
 
   constructor() {
     makeAutoObservable(this);
+  }
+  setEditCompleted() {
+    this.editCompleted = false;
+  }
+  setEditFailed() {
+    this.editFailed = false;
   }
 
   setItemId(newId) {
@@ -27,25 +37,43 @@ class EditItemId {
   setMarketCap(marketCap) {
     this.marketCap = marketCap;
   }
+  setAction() {
+    this.action = false;
+  }
   getEdit(id) {
     getDoc(doc(db, "Crypto", id)).then((value) => {
-      console.log(value.data());
       this.setName(value.data().name);
       this.setTag(value.data().tag);
       this.setPrice(value.data().price);
       this.setMarketCap(value.data().marketCap);
     });
+    runInAction(() => (this.action = true));
   }
   setEdit(id) {
-    if (isNaN(this.price, this.marketCap)) {
-      alert("Price and  Marketcap must be a number");
+    if (!this.name || !this.tag || !this.price || !this.marketCap) {
+      setTimeout(() => {
+        runInAction(() => (this.editFailed = true));
+      }, 200);
+      setTimeout(() => {
+        runInAction(() => (this.editFailed = false));
+      }, 2000);
     } else {
-      updateDoc(doc(db, "Crypto", id), {
-        name: this.name,
-        tag: this.tag,
-        price: this.price,
-        marketCap: this.marketCap,
-      });
+      if (isNaN(this.price, this.marketCap)) {
+        alert("Price and  Marketcap must be a number");
+      } else {
+        updateDoc(doc(db, "Crypto", id), {
+          name: this.name,
+          tag: this.tag,
+          price: +this.price,
+          marketCap: +this.marketCap,
+        });
+        setTimeout(() => {
+          runInAction(() => (this.editCompleted = true));
+        }, 200);
+        setTimeout(() => {
+          runInAction(() => (this.editCompleted = false));
+        }, 2000);
+      }
     }
   }
 }

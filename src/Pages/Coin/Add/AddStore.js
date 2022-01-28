@@ -53,8 +53,8 @@ class AddNewList {
         addDoc(collection(db, "Crypto"), {
           name: this.name,
           tag: this.tag,
-          price: this.price,
-          marketCap: this.marketCap,
+          price: +this.price,
+          marketCap: +this.marketCap,
         });
         this.setName("");
         this.setTag("");

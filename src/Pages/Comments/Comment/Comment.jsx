@@ -7,21 +7,23 @@ import { AddComment } from "../AddComments/AddComment.jsx";
 import EditComment from "../EditComments/EditComment";
 import EditCommentStore from "../EditComments/EditCommentStore";
 import DeleteCommentStore from "../DeleteComments/DeleteCommentStore";
+import { Pagination } from "../../../Components/Pagination/Pagination";
+import PaginationStore from "../../../Components/Pagination/PaginationStore";
+import AddCommentStore from "../AddComments/AddCommentStore";
 
 export const Comment = observer(() => {
   const { commentId } = useParams("commentId");
+
   useEffect(() => {
     CommentStore.getComments(commentId);
+    CommentStore.setPageComments();
     CommentStore.getCoinName(commentId);
     CommentStore.getCoinNames();
-
     return () => {
-      CommentStore.setComments("");
-      CommentStore.setCoinName("");
-      CommentStore.setCoinNames("");
-      EditCommentStore.setEditCommentId("");
+      AddCommentStore.setAddAction();
+      DeleteCommentStore.setDeleteConfirmation();
     };
-  }, [DeleteComment.deleteAction]);
+  }, [PaginationStore.pageNumber]);
   return (
     <>
       {DeleteCommentStore.deleteAction && (
@@ -29,10 +31,16 @@ export const Comment = observer(() => {
           <div className="DeleteConfirmationComponents">
             <label>Are you sure that you want to delete comment?</label>
             <div className="DeleteConfirmationButtons">
-              <button onClick={() => DeleteCommentStore.setDelete(DeleteCommentStore.id)}>
+              <button
+                onClick={() =>
+                  DeleteCommentStore.setDelete(DeleteCommentStore.id)
+                }
+              >
                 Yes
               </button>
-              <button onClick={() => DeleteCommentStore.setDeleteAction(false)}>No</button>
+              <button onClick={() => DeleteCommentStore.setDeleteAction(false)}>
+                No
+              </button>
             </div>
           </div>
         </div>
@@ -55,10 +63,9 @@ export const Comment = observer(() => {
           </div>
         </div>
       </div>
-
       <div className="CommentWrapper">
-        {!EditCommentStore.editCommentId && CommentStore.comments
-          ? CommentStore.comments.map((item, i) => (
+        {!EditCommentStore.editCommentId && CommentStore.pageComments
+          ? CommentStore.pageComments.map((item, i) => (
               <div key={i} className="EachComment">
                 <div>user</div>
                 <div>Comment</div>
@@ -68,8 +75,8 @@ export const Comment = observer(() => {
                 <EditComment id={item.id} />
               </div>
             ))
-          : CommentStore.comments &&
-            CommentStore.comments.map((item, i) =>
+          : CommentStore.pageComments &&
+            CommentStore.pageComments.map((item, i) =>
               item.id !== EditCommentStore.editCommentId ? (
                 <div key={i} className="EachComment">
                   <div>user</div>
@@ -109,6 +116,9 @@ export const Comment = observer(() => {
               )
             )}
       </div>
+      {CommentStore.comments != "" && (
+        <Pagination length={CommentStore.comments.length} />
+      )}
     </>
   );
 });

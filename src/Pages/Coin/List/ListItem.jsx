@@ -1,117 +1,99 @@
-import Crypto from "./ListStore";
 import React from "react";
-import { useEffect } from "react";
-import { observer } from "mobx-react";
+import { observer, inject } from "mobx-react";
 import { Link } from "react-router-dom";
-// import AuthUser from "../../User/Auth/AuthUser";
-// import { userAuth } from "../../../Functions/userAuth";
-import { GetComments } from "./GetComments/GetComments";
-import PaginationStore from "../../../Components/Pagination/PaginationStore";
-import SearchStore from "../../../Pages/Coin/Search/SearchStore";
-import OrderBy from "../Description/OrderBy";
+import GetComments from "../List/GetComments/GetComments";
+class ListItem extends React.Component {
+  constructor(props) {
+    super(props);
+    props.stores.page.setIndex();
+    props.stores.crypto.getList(
+      props.stores.page.indexTo,
+      props.stores.page.indexFrom
+    );
+  }
+  componentDidUpdate(to) {
+    if (to.list !== this.props.stores.crypto.list.length) {
+      this.props.stores.page.setPageNumber(1);
+    }
+    if (to.counter !== this.props.stores.order.counter) {
+      this.props.stores.crypto.getList(
+        this.props.stores.page.indexTo,
+        this.props.stores.page.indexFrom,
+        this.props.stores.order.order,
+        this.props.stores.order.counter
+      );
+    }
+    if (
+      to.indexFrom !== this.props.stores.page.indexFrom &&
+      to.indexTo !== this.props.stores.page.indexTo
+    ) {
+      this.props.stores.crypto.setPageList(
+        this.props.stores.page.indexTo,
+        this.props.stores.page.indexFrom
+      );
+    }
+  }
 
-export const ListItem = observer(() => {
-  // const authState = userAuth();
+  render() {
+    return (
+      <>
+        <div className="List" id="ListId">
+          {!this.props.stores.search.item
+            ? this.props.stores.crypto.pageList.map((item, i) => (
+                <div key={i}>
+                  <div className="OneItem">
+                    <div>{item.name} </div>
+                    <div>{item.tag} </div>
+                    <div>{item.price} $</div>
+                    <div>{item.marketCap} $ </div>
 
-  useEffect(() => {
-    Crypto.getList();
-    return () => {
-      SearchStore.setItem("");
-    };
-  }, [PaginationStore.pageNumber, PaginationStore.indexFrom, OrderBy.counter]);
-
-  return (
-    <>
-      <div className="List" id="ListId">
-        {!SearchStore.item && Crypto.pageList
-          ? Crypto.pageList.map((item, i) => (
-              <div key={i}>
-                <div className="OneItem">
-                  <div>{item.name} </div>
-                  <div>{item.tag} </div>
-                  <div>{item.price} $</div>
-                  <div>{item.marketCap} $ </div>
-
-                  <>
-                    {" "}
-                    <Link to={`/edit/${item.id}`}>Edit</Link>
-                    <button onClick={() => Crypto.setDelete(item.id)}>
-                      Delete
-                    </button>
-                  </>
+                    <>
+                      {" "}
+                      <Link to={`/edit/${item.id}`}>Edit</Link>
+                      <button
+                        onClick={() =>
+                          this.props.stores.crypto.setDelete(item.id)
+                        }
+                      >
+                        Delete
+                      </button>
+                    </>
+                  </div>
+                  <GetComments
+                    id={item.id}
+                    store={this.props.stores.getComment}
+                  />
                 </div>
-                <GetComments id={item.id} />
-              </div>
-            ))
-          : Crypto.searchList &&
-            Crypto.searchList.map((item, i) => (
-              <div className="OneItem" key={i}>
-                <div>{item.name} </div>
-                <div>{item.tag} </div>
-                <div>{item.price} $</div>
-                <div>{item.marketCap} $ </div>
+              ))
+            : this.props.stores.search.searchList.map((item, i) => (
+                <div key={i}>
+                  <div className="OneItem">
+                    <div>{item.name} </div>
+                    <div>{item.tag} </div>
+                    <div>{item.price} $</div>
+                    <div>{item.marketCap} $ </div>
 
-                <>
-                  {" "}
-                  <Link to={`/edit/${item.id}`}>Edit</Link>
-                  <button onClick={() => Crypto.setDelete(item.id)}>
-                    Delete
-                  </button>
-                </>
-              </div>
-            ))}
-      </div>
-    </>
-  );
-});
-
-// import React, { componentDidMount } from "react";
-// import { observer, inject } from "mobx-react";
-// import { Link } from "react-router-dom";
-// import { GetComments } from "../List/GetComments/GetComments";
-// import PaginationStore from "../../../Components/Pagination/PaginationStore";
-// import { action, makeAutoObservable, runInAction } from "mobx";
-// class ListItem extends React.Component {
-//   render() {
-//     const crypto = this.props.stores.crypto;
-//     const pages = this.props.stores.page;
-
-//     return (
-//       <>
-//         <button
-//           onClick={() => {
-//             crypto.setTest(crypto.test + 1);
-//           }}
-//         >
-//           click me!
-//         </button>
-//         <div>{crypto.test}</div>
-//         <div className="List" id="ListId">
-//           {crypto.pageList &&
-//             crypto.pageList.map((item, i) => (
-//               <div key={i}>
-//                 <div className="OneItem">
-//                   <div>{item.name} </div>
-//                   <div>{item.tag} </div>
-//                   <div>{item.price} $</div>
-//                   <div>{item.marketCap} $ </div>
-
-//                   <>
-//                     {" "}
-//                     <Link to={`/edit/${item.id}`}>Edit</Link>
-//                     <button onClick={() => crypto.setDelete(item.id)}>
-//                       Delete
-//                     </button>
-//                   </>
-//                 </div>
-//                 <GetComments id={item.id} />
-//               </div>
-//             ))}
-//         </div>
-//       </>
-//     );
-//   }
-// }
-// export default inject(({ stores }) => ({
-//   stores,
-// }))(observer(ListItem));
+                    <>
+                      {" "}
+                      <Link to={`/edit/${item.id}`}>Edit</Link>
+                      <button
+                        onClick={() => this.state.crypto.setDelete(item.id)}
+                      >
+                        Delete
+                      </button>
+                    </>
+                  </div>
+                  <GetComments
+                    id={item.id}
+                    store={this.props.stores.getComment}
+                  />
+                </div>
+              ))}
+        </div>
+      </>
+    );
+  }
+}
+export default inject(({ stores }) => ({
+  stores,
+}))(observer(ListItem));

@@ -20,7 +20,7 @@ class DeleteComment {
     this.deleteConfirmation = bool;
   }
   setDeleteId(id) {
-    this.id = id.id;
+    this.id = id;
   }
   setDelete(id) {
     deleteDoc(doc(db, "Comments", id));
@@ -29,4 +29,4 @@ class DeleteComment {
   }
 }
 
-export default new DeleteComment();
+export default DeleteComment;

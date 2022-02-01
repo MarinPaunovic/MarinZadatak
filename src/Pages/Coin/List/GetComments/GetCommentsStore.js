@@ -24,4 +24,4 @@ class GetCommentStore {
   }
 }
 
-export default new GetCommentStore();
+export default GetCommentStore;

@@ -1,124 +1,134 @@
-import { useParams } from "react-router-dom";
-import { useEffect } from "react";
-import { observer } from "mobx-react";
-import CommentStore from "./CommentStore";
+import React from "react";
+import { observer, inject } from "mobx-react";
+import AddComment from "../AddComments/AddComment";
 import DeleteComment from "../DeleteComments/DeleteComment";
-import { AddComment } from "../AddComments/AddComment.jsx";
 import EditComment from "../EditComments/EditComment";
-import EditCommentStore from "../EditComments/EditCommentStore";
-import DeleteCommentStore from "../DeleteComments/DeleteCommentStore";
-import { Pagination } from "../../../Components/Pagination/Pagination";
-import PaginationStore from "../../../Components/Pagination/PaginationStore";
-import AddCommentStore from "../AddComments/AddCommentStore";
 
-export const Comment = observer(() => {
-  const { commentId } = useParams("commentId");
+class Comment extends React.Component {
+  constructor(props) {
+    super(props);
+    this.delete = props.stores.delete;
+    this.comments = props.stores.comments;
+    this.add = props.stores.add;
+    this.page = props.stores.page;
+    this.commentId = props.stores.id.commentId;
+    this.edit = props.stores.edit;
+    this.page.setIndex();
+    this.comments.getCoinName(this.commentId);
+    this.comments.getCoinNames();
+    this.comments.getComments(
+      this.commentId,
+      this.page.indexTo,
+      this.page.indexFrom
+    );
+  }
 
-  useEffect(() => {
-    CommentStore.getComments(commentId);
-    CommentStore.setPageComments();
-    CommentStore.getCoinName(commentId);
-    CommentStore.getCoinNames();
-    return () => {
-      AddCommentStore.setAddAction();
-      DeleteCommentStore.setDeleteConfirmation();
-    };
-  }, [PaginationStore.pageNumber]);
-  return (
-    <>
-      {DeleteCommentStore.deleteAction && (
-        <div className="DeleteConfirmationWrapper">
-          <div className="DeleteConfirmationComponents">
-            <label>Are you sure that you want to delete comment?</label>
-            <div className="DeleteConfirmationButtons">
-              <button
-                onClick={() =>
-                  DeleteCommentStore.setDelete(DeleteCommentStore.id)
-                }
-              >
-                Yes
-              </button>
-              <button onClick={() => DeleteCommentStore.setDeleteAction(false)}>
-                No
-              </button>
+  componentDidUpdate(to) {
+    if (to.list !== this.comments.comments.length) {
+      this.page.setPageNumber(1);
+    }
+    if (
+      to.indexFrom !== this.page.indexFrom &&
+      to.indexTo !== this.page.indexTo
+    ) {
+      this.comments.setPageComments(this.page.indexTo, this.page.indexFrom);
+    }
+  }
+  render() {
+    return (
+      <>
+        {this.delete.deleteAction && (
+          <div className="DeleteConfirmationWrapper">
+            <div className="DeleteConfirmationComponents">
+              <label>Are you sure that you want to delete comment?</label>
+              <div className="DeleteConfirmationButtons">
+                <button onClick={() => this.delete.setDelete(this.delete.id)}>
+                  Yes
+                </button>
+                <button onClick={() => this.delete.setDeleteAction(false)}>
+                  No
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+        <div className="CommentCoinName">{this.comments.coinName}</div>
+        <div className="CommentButtonWrapper">
+          <AddComment id={this.commentId} add={this.add} page={this.page} />
+          <div className="CoinCommentChoice">
+            <button className="CoinCommentChoiceButton">Change coin</button>
+            <div className="CoinCommentChoiceContent">
+              {this.comments.coinNames &&
+                this.comments.coinNames.map(
+                  (item, i) =>
+                    item.name != this.comments.coinName && (
+                      <a key={i} href={item.id}>
+                        {item.name}
+                      </a>
+                    )
+                )}
             </div>
           </div>
         </div>
-      )}
-      <div className="CommentCoinName">{CommentStore.coinName}</div>
-      <div className="CommentButtonWrapper">
-        <AddComment id={commentId} />
-        <div className="CoinCommentChoice">
-          <button className="CoinCommentChoiceButton">Change coin</button>
-          <div className="CoinCommentChoiceContent">
-            {CommentStore.coinNames &&
-              CommentStore.coinNames.map(
-                (item, i) =>
-                  item.name != CommentStore.coinName && (
-                    <a key={i} href={item.id}>
-                      {item.name}
-                    </a>
-                  )
-              )}
-          </div>
-        </div>
-      </div>
-      <div className="CommentWrapper">
-        {!EditCommentStore.editCommentId && CommentStore.pageComments
-          ? CommentStore.pageComments.map((item, i) => (
-              <div key={i} className="EachComment">
-                <div>user</div>
-                <div>Comment</div>
-                <div className="CommentTimestamp">{item.createdAt}</div>
-                <div className="CommentContent">{item.comment}</div>
-                <DeleteComment id={item.id} />
-                <EditComment id={item.id} />
-              </div>
-            ))
-          : CommentStore.pageComments &&
-            CommentStore.pageComments.map((item, i) =>
-              item.id !== EditCommentStore.editCommentId ? (
+        <div className="CommentWrapper">
+          {!this.edit.editCommentId && this.comments.pageComments
+            ? this.comments.pageComments.map((item, i) => (
                 <div key={i} className="EachComment">
                   <div>user</div>
                   <div>Comment</div>
                   <div className="CommentTimestamp">{item.createdAt}</div>
                   <div className="CommentContent">{item.comment}</div>
-                  <DeleteComment id={item.id} />
-                  <EditComment id={item.id} />
+                  <DeleteComment id={item.id} delete={this.delete} />
+                  <EditComment id={item.id} edit={this.edit} />
                 </div>
-              ) : (
-                <div key={i} className="EachComment">
-                  <div>user</div>
-                  <div>Comment</div>
-                  <div className="CommentTimestamp">{item.createdAt}</div>
-                  <textarea
-                    style={{ resize: "none", height: "50px" }}
-                    maxLength={255}
-                    onChange={(e) => EditCommentStore.setEdit(e.target.value)}
-                    defaultValue={item.comment}
-                  ></textarea>
-                  <button
-                    className="DeleteComment"
-                    onClick={() => EditCommentStore.setEditCommentId("")}
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    className="EditComment"
-                    onClick={() => {
-                      EditCommentStore.setHandleEdit(item.id);
-                      EditCommentStore.setEditCommentId("");
-                    }}
-                  >
-                    confirm
-                  </button>
-                </div>
-              )
-            )}
-      </div>
-      {CommentStore.comments != "" && (
-        <Pagination length={CommentStore.comments.length} />
-      )}
-    </>
-  );
-});
+              ))
+            : this.comments.pageComments &&
+              this.comments.pageComments.map((item, i) =>
+                item.id !== this.edit.editCommentId ? (
+                  <div key={i} className="EachComment">
+                    <div>user</div>
+                    <div>Comment</div>
+                    <div className="CommentTimestamp">{item.createdAt}</div>
+                    <div className="CommentContent">{item.comment}</div>
+                    <DeleteComment id={item.id} delete={this.delete} />
+                    <EditComment id={item.id} edit={this.edit} />
+                  </div>
+                ) : (
+                  <div key={i} className="EachComment">
+                    <div>user</div>
+                    <div>Comment</div>
+                    <div className="CommentTimestamp">{item.createdAt}</div>
+                    <textarea
+                      style={{ resize: "none", height: "50px" }}
+                      maxLength={255}
+                      onChange={(e) =>
+                        this.props.stores.edit.setEdit(e.target.value)
+                      }
+                      defaultValue={item.comment}
+                    ></textarea>
+                    <button
+                      className="DeleteComment"
+                      onClick={() =>
+                        this.props.stores.edit.setEditCommentId("")
+                      }
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      className="EditComment"
+                      onClick={() => {
+                        this.props.stores.edit.setHandleEdit(item.id);
+                        this.props.stores.edit.setEditCommentId("");
+                      }}
+                    >
+                      confirm
+                    </button>
+                  </div>
+                )
+              )}
+        </div>
+      </>
+    );
+  }
+}
+export default inject((provider) => provider)(observer(Comment));

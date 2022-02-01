@@ -46,7 +46,7 @@ class AddNewList {
   setMarketCap(marketCap) {
     this.marketCap = marketCap;
   }
-  setSubmit(e) {
+  setSubmit(e, timer, addStore) {
     e.preventDefault();
     if (this.name && this.tag && this.price && this.marketCap) {
       if (!isNaN(this.price) && !isNaN(this.marketCap)) {
@@ -62,13 +62,13 @@ class AddNewList {
         this.setMarketCap("");
         this.inputs = true;
         let id1 = setTimeout(function () {
-          AddStore.handleAddDisplay(true);
+          addStore.handleAddDisplay(true);
         }, 200);
-        Timer.setTestId1(id1);
+        timer.setTestId1(id1);
         let id2 = setTimeout(function () {
-          AddStore.handleAddDisplay(false);
+          addStore.handleAddDisplay(false);
         }, 2000);
-        Timer.setTestId2(id2);
+        timer.setTestId2(id2);
       } else {
         if (isNaN(this.price)) {
           this.conditionPrice = false;
@@ -85,15 +85,15 @@ class AddNewList {
       }
     } else {
       let id3 = setTimeout(function () {
-        AddStore.handleFailDisplay(true);
+        addStore.handleFailDisplay(true);
       }, 200);
-      Timer.setTestId3(id3);
+      timer.setTestId3(id3);
       let id4 = setTimeout(function () {
-        AddStore.handleFailDisplay(false);
+        addStore.handleFailDisplay(false);
       }, 2000);
-      Timer.setTestId4(id4);
+      timer.setTestId4(id4);
     }
   }
 }
 
-export default new AddNewList();
+export default AddNewList;

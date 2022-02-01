@@ -1,41 +1,56 @@
-import { observer } from "mobx-react";
-import AddCommentStore from "./AddCommentStore";
-
-export const AddComment = observer((id) => {
-  const ACS = AddCommentStore;
-  return (
-    <>
-      <button
-        className="AddCommentButton"
-        onClick={() => {
-          ACS.setToggle();
-        }}
-      >
-        Add Comment
-      </button>
-      {ACS.toggle && (
-        <div className="AddCommentWrapper" id={"AddCommentWrapper"}>
-          <div className="AddCommentInputs">
-            <label>Comment</label>
-            <textarea
-              maxLength={300}
-              id={"AddCommentTextarea"}
-              onChange={(e) => ACS.setContent(e.target.value)}
-            ></textarea>
-            <button
-              onClick={() => {
-                ACS.setComment(id.id, ACS.content);
-                ACS.setToggle();
-              }}
-            >
-              Add
-            </button>
-            <button className="CloseAddCommentButton" onClick={() => ACS.setToggle()}>
-              X
-            </button>
+import { inject, observer } from "mobx-react";
+import React from "react";
+class AddComment extends React.Component {
+  constructor(props) {
+    super(props);
+    console.log(props);
+  }
+  componentDidUpdate(to) {
+    this.props.page.setPageNumber(1);
+  }
+  render() {
+    return (
+      <>
+        <button
+          className="AddCommentButton"
+          onClick={() => {
+            this.props.add.setToggle();
+          }}
+        >
+          Add Comment
+        </button>
+        {this.props.add.toggle && (
+          <div className="AddCommentWrapper" id={"AddCommentWrapper"}>
+            <div className="AddCommentInputs">
+              <label>Comment</label>
+              <textarea
+                maxLength={300}
+                id={"AddCommentTextarea"}
+                onChange={(e) => this.props.add.setContent(e.target.value)}
+              ></textarea>
+              <button
+                onClick={() => {
+                  this.props.add.setComment(
+                    this.props.id,
+                    this.props.add.content
+                  );
+                  this.props.add.setToggle();
+                }}
+              >
+                Add
+              </button>
+              <button
+                className="CloseAddCommentButton"
+                onClick={() => this.props.add.setToggle()}
+              >
+                X
+              </button>
+            </div>
           </div>
-        </div>
-      )}
-    </>
-  );
-});
+        )}
+      </>
+    );
+  }
+}
+
+export default inject()(observer(AddComment));

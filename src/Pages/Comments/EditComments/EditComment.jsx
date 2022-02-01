@@ -1,11 +1,21 @@
+import { inject } from "mobx-react";
+import React from "react";
 import EditCommentStore from "./EditCommentStore";
 
-const EditComment = (id) => {
-  return (
-    <button onClick={() => EditCommentStore.setEditCommentId(id.id)} className="EditComment">
-      edit
-    </button>
-  );
-};
+class EditComment extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+  render() {
+    return (
+      <button
+        onClick={() => this.props.edit.setEditCommentId(this.props.id)}
+        className="EditComment"
+      >
+        edit
+      </button>
+    );
+  }
+}
 
-export default EditComment;
+export default inject()(EditComment);

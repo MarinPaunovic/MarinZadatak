@@ -6,7 +6,6 @@ import {
   onSnapshot,
 } from "firebase/firestore";
 import { makeAutoObservable, runInAction } from "mobx";
-import PaginationStore from "../../../Components/Pagination/PaginationStore";
 import { db } from "../../../db/firebase";
 
 class CommentStore {
@@ -18,13 +17,9 @@ class CommentStore {
 
   constructor() {
     makeAutoObservable(this);
-    this.comments = "";
-    this.pageComments = "";
-    this.coinNames = "";
-    this.coinName = "";
-    this.coinId = "";
   }
-  getComments(id) {
+
+  getComments(id, iT, iF) {
     this.coinId = id;
     onSnapshot(
       query(collection(db, "Comments"), where("coinId", "==", id)),
@@ -33,8 +28,10 @@ class CommentStore {
           ...item.data(),
           id: item.id,
         }));
-        runInAction(() => (this.comments = comments));
-        this.setPageComments();
+        runInAction(() => {
+          this.comments = comments;
+          this.setPageComments(iT, iF);
+        });
       }
     );
   }
@@ -75,9 +72,9 @@ class CommentStore {
   setCoinNames(name) {
     this.coinNames = name;
   }
-  setPageComments() {
-    let indexTo = PaginationStore.indexTo;
-    let indexFrom = PaginationStore.indexFrom;
+  setPageComments(iT, iF) {
+    let indexTo = iT;
+    let indexFrom = iF;
     const pageComments = [];
     if (indexTo > this.comments.length) {
       for (indexFrom; this.comments.length > indexFrom; indexFrom++) {
@@ -93,4 +90,4 @@ class CommentStore {
   }
 }
 
-export default new CommentStore();
+export default CommentStore;

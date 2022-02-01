@@ -36,4 +36,4 @@ class AddCommentStore {
   }
 }
 
-export default new AddCommentStore();
+export default AddCommentStore;

@@ -1,40 +1,40 @@
 import { Link } from "react-router-dom";
-import { observer } from "mobx-react";
-import GetCommentsStore from "./GetCommentsStore";
-import { useEffect } from "react";
+import { inject, observer } from "mobx-react";
+import React from "react";
 
-export const GetComments = observer((id) => {
-  useEffect(() => {
-    return () => {
-      GetCommentsStore.setCoinId();
-    };
-  }, []);
-  return (
-    <>
-      <Link
-        to={`/comments/${id.id}`}
-        className="GetCommentButton"
-        style={
-          id.id == GetCommentsStore.coinId
-            ? { display: "block" }
-            : { display: "none" }
-        }
-      >
-        Comment
-      </Link>
+class GetComments extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+  render() {
+    return (
+      <>
+        <Link
+          to={`/comments/${this.props.id}`}
+          className="GetCommentButton"
+          style={
+            this.props.id == this.props.store.coinId
+              ? { display: "block" }
+              : { display: "none" }
+          }
+        >
+          Comment
+        </Link>
 
-      <button
-        onClick={() => {
-          GetCommentsStore.setToggle(id.id);
-        }}
-        className="GetComment"
-      >
-        <i className="material-icons">
-          {id.id == GetCommentsStore.coinId
-            ? "arrow_drop_up"
-            : "arrow_drop_down"}
-        </i>
-      </button>
-    </>
-  );
-});
+        <button
+          onClick={() => {
+            this.props.store.setToggle(this.props.id);
+          }}
+          className="GetComment"
+        >
+          <i className="material-icons">
+            {this.props.id == this.props.store.coinId
+              ? "arrow_drop_up"
+              : "arrow_drop_down"}
+          </i>
+        </button>
+      </>
+    );
+  }
+}
+export default inject()(observer(GetComments));

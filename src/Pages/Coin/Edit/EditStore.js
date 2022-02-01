@@ -6,8 +6,8 @@ class EditItemId {
   itemId = "";
   name = "";
   tag = "";
-  price = null;
-  marketCap = null;
+  price = "";
+  marketCap = "";
   editCompleted = false;
   editFailed = false;
   action = false;
@@ -50,7 +50,7 @@ class EditItemId {
     runInAction(() => (this.action = true));
   }
   setEdit(id) {
-    if (!this.name || !this.tag || !this.price || !this.marketCap) {
+    if (!this.name || !this.tag) {
       setTimeout(() => {
         runInAction(() => (this.editFailed = true));
       }, 200);
@@ -78,4 +78,4 @@ class EditItemId {
   }
 }
 
-export default new EditItemId();
+export default EditItemId;

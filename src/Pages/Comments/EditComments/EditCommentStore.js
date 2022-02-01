@@ -27,4 +27,4 @@ class EditCommentStore {
   }
 }
 
-export default new EditCommentStore();
+export default EditCommentStore;

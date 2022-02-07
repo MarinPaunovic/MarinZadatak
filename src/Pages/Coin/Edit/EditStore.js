@@ -2,7 +2,7 @@ import { makeAutoObservable, runInAction } from "mobx";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { db } from "../../../db/firebase";
 
-class EditItemId {
+class EditStore {
   itemId = "";
   name = "";
   tag = "";
@@ -12,8 +12,10 @@ class EditItemId {
   editFailed = false;
   action = false;
 
-  constructor() {
+  constructor(props) {
     makeAutoObservable(this);
+    this.id = props.editid;
+    this.getEdit(this.id);
   }
   setEditCompleted() {
     this.editCompleted = false;
@@ -78,4 +80,4 @@ class EditItemId {
   }
 }
 
-export default EditItemId;
+export default EditStore;

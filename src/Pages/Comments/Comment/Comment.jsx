@@ -5,63 +5,37 @@ import DeleteComment from "../DeleteComments/DeleteComment";
 import EditComment from "../EditComments/EditComment";
 
 class Comment extends React.Component {
-  constructor(props) {
-    super(props);
-    this.delete = props.stores.delete;
-    this.comments = props.stores.comments;
-    this.add = props.stores.add;
-    this.page = props.stores.page;
-    this.commentId = props.stores.id.commentId;
-    this.edit = props.stores.edit;
-    this.page.setIndex();
-    this.comments.getCoinName(this.commentId);
-    this.comments.getCoinNames();
-    this.comments.getComments(
-      this.commentId,
-      this.page.indexTo,
-      this.page.indexFrom
-    );
-  }
-
-  componentDidUpdate(to) {
-    if (to.list !== this.comments.comments.length) {
-      this.page.setPageNumber(1);
-    }
-    if (
-      to.indexFrom !== this.page.indexFrom &&
-      to.indexTo !== this.page.indexTo
-    ) {
-      this.comments.setPageComments(this.page.indexTo, this.page.indexFrom);
-    }
-  }
   render() {
+    const stores = this.props.store.stores;
     return (
       <>
-        {this.delete.deleteAction && (
+        {stores.delete.deleteAction && (
           <div className="DeleteConfirmationWrapper">
             <div className="DeleteConfirmationComponents">
               <label>Are you sure that you want to delete comment?</label>
               <div className="DeleteConfirmationButtons">
-                <button onClick={() => this.delete.setDelete(this.delete.id)}>
+                <button
+                  onClick={() => stores.delete.setDelete(stores.delete.id)}
+                >
                   Yes
                 </button>
-                <button onClick={() => this.delete.setDeleteAction(false)}>
+                <button onClick={() => stores.delete.setDeleteAction(false)}>
                   No
                 </button>
               </div>
             </div>
           </div>
         )}
-        <div className="CommentCoinName">{this.comments.coinName}</div>
+        <div className="CommentCoinName">{stores.comments.coinName}</div>
         <div className="CommentButtonWrapper">
-          <AddComment id={this.commentId} add={this.add} page={this.page} />
+          <AddComment id={this.commentId} add={stores.add} page={stores.page} />
           <div className="CoinCommentChoice">
             <button className="CoinCommentChoiceButton">Change coin</button>
             <div className="CoinCommentChoiceContent">
-              {this.comments.coinNames &&
-                this.comments.coinNames.map(
+              {stores.comments.coinNames &&
+                stores.comments.coinNames.map(
                   (item, i) =>
-                    item.name != this.comments.coinName && (
+                    item.name != stores.comments.coinName && (
                       <a key={i} href={item.id}>
                         {item.name}
                       </a>
@@ -70,28 +44,29 @@ class Comment extends React.Component {
             </div>
           </div>
         </div>
+
         <div className="CommentWrapper">
-          {!this.edit.editCommentId && this.comments.pageComments
-            ? this.comments.pageComments.map((item, i) => (
+          {!stores.edit.editCommentId && stores.comments.pageComments
+            ? stores.comments.pageComments.map((item, i) => (
                 <div key={i} className="EachComment">
                   <div>user</div>
                   <div>Comment</div>
                   <div className="CommentTimestamp">{item.createdAt}</div>
                   <div className="CommentContent">{item.comment}</div>
-                  <DeleteComment id={item.id} delete={this.delete} />
-                  <EditComment id={item.id} edit={this.edit} />
+                  <DeleteComment id={item.id} delete={stores.delete} />
+                  <EditComment id={item.id} edit={stores.edit} />
                 </div>
               ))
-            : this.comments.pageComments &&
-              this.comments.pageComments.map((item, i) =>
-                item.id !== this.edit.editCommentId ? (
+            : stores.comments.pageComments &&
+              stores.comments.pageComments.map((item, i) =>
+                item.id !== stores.edit.editCommentId ? (
                   <div key={i} className="EachComment">
                     <div>user</div>
                     <div>Comment</div>
                     <div className="CommentTimestamp">{item.createdAt}</div>
                     <div className="CommentContent">{item.comment}</div>
-                    <DeleteComment id={item.id} delete={this.delete} />
-                    <EditComment id={item.id} edit={this.edit} />
+                    <DeleteComment id={item.id} delete={stores.delete} />
+                    <EditComment id={item.id} edit={stores.edit} />
                   </div>
                 ) : (
                   <div key={i} className="EachComment">
@@ -101,24 +76,20 @@ class Comment extends React.Component {
                     <textarea
                       style={{ resize: "none", height: "50px" }}
                       maxLength={255}
-                      onChange={(e) =>
-                        this.props.stores.edit.setEdit(e.target.value)
-                      }
+                      onChange={(e) => stores.edit.setEdit(e.target.value)}
                       defaultValue={item.comment}
                     ></textarea>
                     <button
                       className="DeleteComment"
-                      onClick={() =>
-                        this.props.stores.edit.setEditCommentId("")
-                      }
+                      onClick={() => stores.edit.setEditCommentId("")}
                     >
                       Cancel
                     </button>
                     <button
                       className="EditComment"
                       onClick={() => {
-                        this.props.stores.edit.setHandleEdit(item.id);
-                        this.props.stores.edit.setEditCommentId("");
+                        stores.edit.setHandleEdit(item.id);
+                        stores.edit.setEditCommentId("");
                       }}
                     >
                       confirm
@@ -131,4 +102,4 @@ class Comment extends React.Component {
     );
   }
 }
-export default inject((provider) => provider)(observer(Comment));
+export default inject((provider) => ({ store: provider }))(observer(Comment));

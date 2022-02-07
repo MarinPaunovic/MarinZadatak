@@ -5,7 +5,7 @@ import {
   where,
   onSnapshot,
 } from "firebase/firestore";
-import { makeAutoObservable, runInAction } from "mobx";
+import { makeAutoObservable, reaction, runInAction } from "mobx";
 import { db } from "../../../db/firebase";
 
 class CommentStore {
@@ -14,13 +14,44 @@ class CommentStore {
   coinName = "";
   coinNames = [];
   coinId = "";
+  test = 5;
 
-  constructor() {
+  constructor(props) {
     makeAutoObservable(this);
-  }
+    reaction(
+      () => props.stores.page.pageNumber,
+      () =>
+        this.setPageComments(
+          props.stores.page.indexTo,
+          props.stores.page.indexFrom
+        )
+    );
+    reaction(
+      () => props.stores.page.pages.length,
+      (a, b) => {
+        if (b > a) {
+          this.setPageComments(
+            props.stores.page.indexTo - 5,
+            props.stores.page.indexFrom - 5
+          );
+          props.stores.page.setPageNumber(props.stores.page.pageNumber - 1);
+        }
+      }
+    );
+    reaction(
+      () => this.comments,
+      () =>
+        this.setPageComments(
+          props.stores.page.indexTo,
+          props.stores.page.indexFrom
+        )
+    );
 
-  getComments(id, iT, iF) {
-    this.coinId = id;
+    this.getComments(props.id.commentId);
+    this.getCoinNames();
+    this.getCoinName(props.id.commentId);
+  }
+  getComments(id) {
     onSnapshot(
       query(collection(db, "Comments"), where("coinId", "==", id)),
       (doc) => {
@@ -30,15 +61,16 @@ class CommentStore {
         }));
         runInAction(() => {
           this.comments = comments;
-          this.setPageComments(iT, iF);
+          if (!this.pageComments.length) {
+            this.setPageComments(5, 0);
+          }
         });
       }
     );
   }
-  setComments(comment) {
-    this.comments = comment;
+  setEditAction() {
+    this.editAction = false;
   }
-
   getCoinName(id) {
     getDocs(query(collection(db, "Crypto"))).then((value) => {
       const test = [];
@@ -53,11 +85,6 @@ class CommentStore {
       });
     });
   }
-
-  setCoinName(name) {
-    this.coinName = name;
-  }
-
   getCoinNames() {
     getDocs(query(collection(db, "Crypto"))).then((value) => {
       const test = value.docs.map((item) => ({
@@ -68,9 +95,6 @@ class CommentStore {
         this.coinNames = test;
       });
     });
-  }
-  setCoinNames(name) {
-    this.coinNames = name;
   }
   setPageComments(iT, iF) {
     let indexTo = iT;

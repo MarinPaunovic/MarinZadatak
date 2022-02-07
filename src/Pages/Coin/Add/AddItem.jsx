@@ -5,9 +5,6 @@ import Timer from "./Timer";
 import AddStore from "./AddStore";
 
 class AddItem extends React.Component {
-  constructor(props) {
-    super(props);
-  }
   render() {
     return (
       <div className="AddEdit">

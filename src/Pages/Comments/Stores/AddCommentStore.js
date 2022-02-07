@@ -3,7 +3,7 @@ import { addDoc, collection } from "firebase/firestore";
 import { db } from "../../../db/firebase";
 
 class AddCommentStore {
-  content;
+  content = "";
   toggle = false;
   addAction = false;
 
@@ -20,10 +20,10 @@ class AddCommentStore {
   setToggle() {
     this.toggle = !this.toggle;
   }
-  setComment(id, content) {
+  addComment(id) {
     addDoc(collection(db, "Comments"), {
       coinId: id,
-      comment: content,
+      comment: this.content,
       createdAt: new Date().toLocaleDateString(undefined, {
         day: "numeric",
         month: "long",

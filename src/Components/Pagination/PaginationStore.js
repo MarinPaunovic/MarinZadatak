@@ -5,11 +5,12 @@ class Page {
   pages = [];
   indexFrom = null;
   indexTo = null;
-  test = 0;
-
   constructor() {
     makeAutoObservable(this);
+    this.getPages();
+    this.setIndex();
   }
+
   clearPages() {
     this.pages = [];
   }
@@ -29,6 +30,7 @@ class Page {
       for (let i = 1; test >= i; i++) {
         this.pages.push(i);
       }
+
       this.setIndex();
     }
   }

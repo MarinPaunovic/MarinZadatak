@@ -1,6 +1,5 @@
 import { inject } from "mobx-react";
 import React from "react";
-import DeleteCommentStore from "./DeleteCommentStore";
 
 class DeleteComment extends React.Component {
   constructor(props) {
@@ -12,7 +11,6 @@ class DeleteComment extends React.Component {
         <button
           className="DeleteComment"
           onClick={() => {
-            // console.log(this.props.id);
             this.props.delete.setDeleteAction(true);
             this.props.delete.setDeleteId(this.props.id);
           }}

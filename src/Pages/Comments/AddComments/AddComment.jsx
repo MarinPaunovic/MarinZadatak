@@ -3,10 +3,6 @@ import React from "react";
 class AddComment extends React.Component {
   constructor(props) {
     super(props);
-    console.log(props);
-  }
-  componentDidUpdate(to) {
-    this.props.page.setPageNumber(1);
   }
   render() {
     return (
@@ -30,10 +26,7 @@ class AddComment extends React.Component {
               ></textarea>
               <button
                 onClick={() => {
-                  this.props.add.setComment(
-                    this.props.id,
-                    this.props.add.content
-                  );
+                  this.props.add.addComment(this.props.id);
                   this.props.add.setToggle();
                 }}
               >

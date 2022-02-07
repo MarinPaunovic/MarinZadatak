@@ -11,6 +11,9 @@ class OrderBy {
     this.order = order;
     this.counter = this.counter + 1;
   }
+  setCounter() {
+    this.counter = 0;
+  }
 }
 
 export default OrderBy;

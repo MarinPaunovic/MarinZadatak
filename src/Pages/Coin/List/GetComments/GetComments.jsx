@@ -3,9 +3,6 @@ import { inject, observer } from "mobx-react";
 import React from "react";
 
 class GetComments extends React.Component {
-  constructor(props) {
-    super(props);
-  }
   render() {
     return (
       <>

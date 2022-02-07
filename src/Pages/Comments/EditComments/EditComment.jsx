@@ -1,6 +1,4 @@
-import { inject } from "mobx-react";
 import React from "react";
-import EditCommentStore from "./EditCommentStore";
 
 class EditComment extends React.Component {
   constructor(props) {
@@ -18,4 +16,4 @@ class EditComment extends React.Component {
   }
 }
 
-export default inject()(EditComment);
+export default EditComment;

@@ -1,6 +1,5 @@
-import { makeAutoObservable, runInAction } from "mobx";
+import { makeAutoObservable, runInAction, reaction } from "mobx";
 import { db } from "../../../db/firebase";
-import OrderBy from "../../../Pages/Coin/Description/OrderBy";
 import {
   onSnapshot,
   collection,
@@ -19,8 +18,33 @@ class Crypto {
   action = false;
   searchValue = true;
 
-  constructor() {
+  constructor(props) {
     makeAutoObservable(this);
+    this.getList();
+    reaction(
+      () => props.page.pages.length,
+      (a, b) => {
+        if (b > a) {
+          console.log("stranica manje");
+          this.setPageList(props.page.indexTo - 5, props.page.indexFrom - 5);
+          props.page.setPageNumber(props.page.pageNumber - 1);
+        }
+      }
+    );
+    reaction(
+      () => props.page.pageNumber,
+      () => this.setPageList(props.page.indexTo, props.page.indexFrom)
+    );
+    reaction(
+      () => props.order.counter,
+      () =>
+        this.getList(
+          props.page.indexTo,
+          props.page.indexFrom,
+          props.order.order,
+          props.order.counter
+        )
+    );
   }
   setSearchValue() {
     this.searchValue = true;
@@ -77,7 +101,12 @@ class Crypto {
         }));
         runInAction(() => {
           this.list = list;
-          this.setPageList(iT, iF);
+          if (!this.pageList.length) {
+            this.setPageList(5, 0);
+          }
+          if (order && orderCounter) {
+            this.setPageList(iT, iF);
+          }
         });
       }
     );

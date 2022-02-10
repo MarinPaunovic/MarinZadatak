@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { inject, observer } from "mobx-react";
+import { observer } from "mobx-react";
 import React from "react";
 
 class GetComments extends React.Component {
@@ -34,4 +34,4 @@ class GetComments extends React.Component {
     );
   }
 }
-export default inject()(observer(GetComments));
+export default observer(GetComments);

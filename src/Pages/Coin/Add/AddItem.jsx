@@ -109,20 +109,3 @@ export default inject(() => ({
   addStore: new AddNewList(),
   timer: new Timer(),
 }))(observer(AddItem));
-// useEffect(() => {
-//   return () => {
-//     clearTimeout(Timer.timerId1);
-//     clearTimeout(Timer.timerId2);
-//     clearTimeout(Timer.timerId3);
-//     clearTimeout(Timer.timerId4);
-//     // AddStore.handleConditionMarketCap(true);
-//     // AddStore.handleConditionPrice(true);
-//     AddStore.setName("");
-//     AddStore.setTag("");
-//     AddStore.setPrice("");
-//     AddStore.setMarketCap("");
-//     AddStore.handleAddDisplay(false);
-//     AddStore.handleFailDisplay(false);
-//     // AddStore.handleInputs(false);
-//   };
-// }, []);

@@ -6,7 +6,6 @@ import EditComment from "../EditComments/EditComment";
 
 class Comment extends React.Component {
   render() {
-    console.log(this.props);
     const stores = this.props.store.stores;
     return (
       <>

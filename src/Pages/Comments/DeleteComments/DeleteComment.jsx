@@ -1,10 +1,6 @@
-import { inject } from "mobx-react";
 import React from "react";
 
 class DeleteComment extends React.Component {
-  constructor(props) {
-    super(props);
-  }
   render() {
     return (
       <>
@@ -22,4 +18,4 @@ class DeleteComment extends React.Component {
   }
 }
 
-export default inject()(DeleteComment);
+export default DeleteComment;

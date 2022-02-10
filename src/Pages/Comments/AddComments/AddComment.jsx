@@ -1,9 +1,6 @@
-import { inject, observer } from "mobx-react";
+import { observer } from "mobx-react";
 import React from "react";
 class AddComment extends React.Component {
-  constructor(props) {
-    super(props);
-  }
   render() {
     return (
       <>
@@ -46,4 +43,4 @@ class AddComment extends React.Component {
   }
 }
 
-export default inject()(observer(AddComment));
+export default observer(AddComment);

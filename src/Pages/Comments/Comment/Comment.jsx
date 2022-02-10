@@ -6,6 +6,7 @@ import EditComment from "../EditComments/EditComment";
 
 class Comment extends React.Component {
   render() {
+    console.log(this.props);
     const stores = this.props.store.stores;
     return (
       <>
@@ -28,7 +29,11 @@ class Comment extends React.Component {
         )}
         <div className="CommentCoinName">{stores.comments.coinName}</div>
         <div className="CommentButtonWrapper">
-          <AddComment id={this.commentId} add={stores.add} page={stores.page} />
+          <AddComment
+            id={this.props.store.id.commentId}
+            add={stores.add}
+            page={stores.page}
+          />
           <div className="CoinCommentChoice">
             <button className="CoinCommentChoiceButton">Change coin</button>
             <div className="CoinCommentChoiceContent">

@@ -14,7 +14,7 @@ class EditStore {
 
   constructor(props) {
     makeAutoObservable(this);
-    this.id = props.editid;
+    this.id = props;
     this.getEdit(this.id);
   }
   setEditCompleted() {

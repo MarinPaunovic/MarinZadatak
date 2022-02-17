@@ -3,11 +3,15 @@ import React from "react";
 import EditStore from "./EditStore";
 
 class Edit extends React.Component {
+  constructor(props) {
+    super(props);
+    this.id = props.id.editid;
+    this.edit = new EditStore(this.id);
+  }
   render() {
-    const edit = this.props.edit;
+    const edit = this.edit;
     return (
       <>
-        {console.log("EDIT")}
         {
           <div className="EditWrapper">
             <label>Name</label>
@@ -30,7 +34,7 @@ class Edit extends React.Component {
               value={edit.marketCap}
               onChange={(e) => edit.setMarketCap(e.target.value)}
             ></input>
-            <button onClick={() => edit.setEdit(edit.id)}>Edit</button>
+            <button onClick={() => edit.setEdit(this.id)}>Edit</button>
           </div>
         }
         <div className={edit.editCompleted ? "CoinEditCompleted" : "NoDisplay"}>
@@ -43,6 +47,4 @@ class Edit extends React.Component {
     );
   }
 }
-export default inject((a, { id }) => ({
-  edit: new EditStore(id),
-}))(observer(Edit));
+export default observer(Edit);

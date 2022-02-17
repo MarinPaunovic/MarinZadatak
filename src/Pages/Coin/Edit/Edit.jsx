@@ -7,6 +7,7 @@ class Edit extends React.Component {
     const edit = this.props.edit;
     return (
       <>
+        {console.log("EDIT")}
         {
           <div className="EditWrapper">
             <label>Name</label>

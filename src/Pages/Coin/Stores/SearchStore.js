@@ -1,11 +1,19 @@
-import { makeAutoObservable } from "mobx";
+import { makeAutoObservable, reaction } from "mobx";
 
 class SearchStore {
   item = "";
   searchList = [];
 
-  constructor() {
+  constructor(props) {
     makeAutoObservable(this);
+    reaction(
+      () => this.item,
+      () => {
+        if (this.item !== "") {
+          props.page.getPages(0);
+        } else props.page.getPages(props.crypto.list.length);
+      }
+    );
   }
 
   setItem(searchItem) {

@@ -7,7 +7,6 @@ class EditCommentStore {
   editCommentId = null;
 
   constructor(props) {
-    console.log(props);
     makeAutoObservable(this);
     this.setEditCommentId(props.commentId);
   }

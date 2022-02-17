@@ -2,7 +2,6 @@ import AddNewList from "./AddStore";
 import { inject, observer } from "mobx-react";
 import React from "react";
 import Timer from "./Timer";
-import AddStore from "./AddStore";
 
 class AddItem extends React.Component {
   render() {
@@ -63,13 +62,13 @@ class AddItem extends React.Component {
 
         <div className="Button">
           <form
-            onSubmit={(e) =>
+            onSubmit={(e) => {
               this.props.addStore.setSubmit(
                 e,
                 this.props.timer,
                 this.props.addStore
-              )
-            }
+              );
+            }}
           >
             <button type="Submit" value="Submit">
               Add

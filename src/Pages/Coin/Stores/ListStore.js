@@ -21,29 +21,75 @@ class Crypto {
   constructor(props) {
     makeAutoObservable(this);
     this.getList();
+
+    //reakcija na listu
     reaction(
-      () => props.page.pages.length,
+      () => this.list,
       (a, b) => {
-        if (b > a) {
-          console.log("stranica manje");
-          this.setPageList(props.page.indexTo - 5, props.page.indexFrom - 5);
-          props.page.setPageNumber(props.page.pageNumber - 1);
+        //pri promjeni liste ako nema pages, napravi
+        if (!props.page.pages.length) {
+          //setanje paginacije
+          props.page.setIndex();
+          props.page.getPages(this.list.length);
+        }
+        if (a !== b) {
+          if (a.length > b.length && b.length !== 0) {
+            //kada je list item veci, dodajem item i setaj mi novu listu, nove pages , novu pageListu
+            props.page.getPages(this.list.length);
+            this.getList(props.order.order, props.order.counter);
+            this.setPageList(props.page.indexTo, props.page.indexFrom);
+          }
+          if (a.length < b.length) {
+            //kada se briše iz liste, setaj novu listu i page listu(refresh da ostane isto)
+            props.page.getPages(this.list.length);
+            this.getList(props.order.order, props.order.counter);
+            this.setPageList(props.page.indexTo, props.page.indexFrom);
+          }
+
+          if (!props.crypto.pageList.length) {
+            //setaj mi na promjenu liste pageList ako nema vec pageListe(pocetna)
+            this.setPageList(props.page.indexTo, props.page.indexFrom);
+          }
+          if (a.length === b.length) {
+            //set pageListe za edit/order
+            this.setPageList(props.page.indexTo, props.page.indexFrom);
+          }
         }
       }
     );
     reaction(
+      () => props.order.counter,
+      () => {
+        if (props.order.counter == 0) {
+          //counter JE nula i ide default list
+          this.getList(props.order.order, props.order.counter);
+        } else {
+          //counter NIJE nula i bit ce order
+          this.getList(props.order.order, props.order.counter);
+        }
+      }
+    );
+    //reakcija na pageNumber
+    reaction(
       () => props.page.pageNumber,
-      () => this.setPageList(props.page.indexTo, props.page.indexFrom)
+      () => {
+        //kada se mjenja page number, promjeni i pageListu za taj number
+        this.setPageList(props.page.indexTo, props.page.indexFrom);
+      }
     );
     reaction(
-      () => props.order.counter,
-      () =>
-        this.getList(
-          props.page.indexTo,
-          props.page.indexFrom,
-          props.order.order,
-          props.order.counter
-        )
+      () => props.page.pages.length,
+      (a, b) => {
+        if (a < b) {
+          if (
+            //kada na zadnjoj stranici nakon brisanja treba maknuti stranicu
+            props.page.pageNumber !== 1 &&
+            props.page.pageNumber - 1 === props.page.pages.length
+          ) {
+            props.page.setPageNumber(props.page.pageNumber - 1);
+          }
+        }
+      }
     );
   }
   setSearchValue() {
@@ -88,7 +134,7 @@ class Crypto {
       }
     }
   }
-  getList(iT, iF, order, orderCounter) {
+  getList(order, orderCounter) {
     onSnapshot(
       query(
         collection(db, "Crypto"),
@@ -101,12 +147,6 @@ class Crypto {
         }));
         runInAction(() => {
           this.list = list;
-          if (!this.pageList.length) {
-            this.setPageList(5, 0);
-          }
-          if (order && orderCounter) {
-            this.setPageList(iT, iF);
-          }
         });
       }
     );

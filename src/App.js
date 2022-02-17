@@ -6,31 +6,31 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { Register } from "./Pages/User/Register/Register";
 import { Login } from "./Pages/User/Login/Login";
 import { EditWrapper } from "./Pages/Coin/Edit/EditWrapper.jsx";
-import { auth } from "./db/firebase";
-import { onAuthStateChanged } from "firebase/auth";
-import AuthUser from "./Pages/User/Auth/AuthUser";
-
 import { CommentsWrapper } from "./Pages/Comments/CommentsWrapper";
-function App() {
-  // onAuthStateChanged(auth, (user) => {
-  //   if (user) {
-  //     AuthUser.setUserAuth(true);
-  //   } else AuthUser.setUserAuth(false);
-  // });
+import { Provider } from "mobx-react";
+import CoinStoreWrapper from "./Pages/Coin/Stores/CoinStoreWrapper";
+import CommentsStoreWrapper from "./Pages/Comments/Stores/CommentsStoreWrapper";
+import { observer } from "mobx-react";
 
+function App() {
   return (
-    <Router>
-      <Navbar />
-      <Routes>
-        <Route path="/" element={<Homepage />} />
-        <Route path="/add" element={<Add />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/edit/:editid" element={<EditWrapper />} />
-        <Route path="/comments/:commentId" element={<CommentsWrapper />} />
-      </Routes>
-    </Router>
+    <Provider
+      coinStore={new CoinStoreWrapper()}
+      commentStore={new CommentsStoreWrapper()}
+    >
+      <Router>
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<Homepage />} />
+          <Route path="/add" element={<Add />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/edit/:editid" element={<EditWrapper />} />
+          <Route path="/comments/:commentId" element={<CommentsWrapper />} />
+        </Routes>
+      </Router>
+    </Provider>
   );
 }
 
-export default App;
+export default observer(App);

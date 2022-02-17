@@ -1,25 +1,23 @@
-import { inject, Provider, observer } from "mobx-react";
-import commentsStores from "../Stores/rootCommentsStore";
+import { inject, observer } from "mobx-react";
 import Comment from "./Comment";
 import React from "react";
 import Pagination from "../../../Components/Pagination/Pagination";
 
 class CommentInject extends React.Component {
-  constructor(props) {
-    super(props);
-    this.stores = new commentsStores(props.id);
-  }
   render() {
-    const stores = this.stores;
-    const id = this.props.id;
+    const stores = this.props.stores;
+    const id = this.props.id.commentId;
     return (
       <>
-        <Provider stores={stores} id={id}>
-          <Comment />
-          <Pagination length={stores.comments.comments.length} />
-        </Provider>
+        <Comment stores={stores} id={id} />
+        <Pagination
+          page={stores.page}
+          length={stores.comments.comments.length}
+        />
       </>
     );
   }
 }
-export default observer(CommentInject);
+export default inject((provider) => ({
+  stores: provider.commentStore,
+}))(observer(CommentInject));

@@ -7,8 +7,6 @@ class Page {
   indexTo = null;
   constructor() {
     makeAutoObservable(this);
-    this.getPages();
-    this.setIndex();
   }
 
   clearPages() {
@@ -23,15 +21,13 @@ class Page {
   }
   getPages(length) {
     this.clearPages();
-    if (length === 0) {
+    if (!length || length === 0) {
       this.pages = [];
     } else {
       const test = Math.ceil(length / 5);
       for (let i = 1; test >= i; i++) {
         this.pages.push(i);
       }
-
-      this.setIndex();
     }
   }
   setIndex() {
@@ -39,13 +35,6 @@ class Page {
       this.indexTo = this.pageNumber * 5;
       this.indexFrom = (this.pageNumber - 1) * 5;
     });
-  }
-  setIndexTo() {
-    this.indexTo = null;
-  }
-
-  setIndexFrom() {
-    this.indexFrom = null;
   }
 }
 

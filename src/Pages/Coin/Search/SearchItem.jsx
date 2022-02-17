@@ -1,16 +1,17 @@
-import { inject, observer } from "mobx-react";
+import { observer } from "mobx-react";
 import React from "react";
 
 class SearchItem extends React.Component {
   render() {
-    const search = this.props.stores.search;
+    const search = this.props.search;
+    const crypto = this.props.crypto;
     return (
       <div className="SearchBar" id="SearchBarId">
         <input
           type="text"
           value={search.item}
           onChange={(e) => {
-            search.setSearch(e.target.value, this.props.stores.crypto.list);
+            search.setSearch(e.target.value, crypto.list);
           }}
           placeholder="Search.."
         ></input>
@@ -21,6 +22,4 @@ class SearchItem extends React.Component {
     );
   }
 }
-export default inject(({ stores }) => ({
-  stores: stores,
-}))(observer(SearchItem));
+export default observer(SearchItem);

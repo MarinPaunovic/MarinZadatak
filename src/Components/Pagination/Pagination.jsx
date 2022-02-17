@@ -1,14 +1,9 @@
-import { inject, observer } from "mobx-react";
+import { observer } from "mobx-react";
 import React from "react";
 
 class Pagination extends React.Component {
-  componentDidUpdate(to) {
-    if (to.length !== this.props.length) {
-      this.props.stores.page.getPages(this.props.length);
-    }
-  }
   render() {
-    const page = this.props.stores.page;
+    const page = this.props.page;
     return (
       <div className="Pagination">
         {page.pages.map((index, x) => {
@@ -36,6 +31,4 @@ class Pagination extends React.Component {
     );
   }
 }
-export default inject(({ stores }) => ({
-  stores,
-}))(observer(Pagination));
+export default observer(Pagination);

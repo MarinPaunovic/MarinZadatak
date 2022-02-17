@@ -1,14 +1,16 @@
 import React from "react";
-import { observer, inject } from "mobx-react";
+import { observer } from "mobx-react";
 import { Link } from "react-router-dom";
 import GetComments from "../List/GetComments/GetComments";
 class ListItem extends React.Component {
   render() {
+    const stores = this.props.stores;
     return (
       <>
+        {console.log(stores.crypto.pageList)}
         <div className="List" id="ListId">
-          {!this.props.stores.search.item
-            ? this.props.stores.crypto.pageList.map((item, i) => (
+          {!stores.search.item
+            ? stores.crypto.pageList.map((item, i) => (
                 <div key={i}>
                   <div className="OneItem">
                     <div>{item.name} </div>
@@ -19,22 +21,15 @@ class ListItem extends React.Component {
                     <>
                       {" "}
                       <Link to={`/edit/${item.id}`}>Edit</Link>
-                      <button
-                        onClick={() =>
-                          this.props.stores.crypto.setDelete(item.id)
-                        }
-                      >
+                      <button onClick={() => stores.crypto.setDelete(item.id)}>
                         Delete
                       </button>
                     </>
                   </div>
-                  <GetComments
-                    id={item.id}
-                    store={this.props.stores.getComment}
-                  />
+                  <GetComments id={item.id} store={stores.getComment} />
                 </div>
               ))
-            : this.props.stores.search.searchList.map((item, i) => (
+            : stores.search.searchList.map((item, i) => (
                 <div key={i}>
                   <div className="OneItem">
                     <div>{item.name} </div>
@@ -45,17 +40,12 @@ class ListItem extends React.Component {
                     <>
                       {" "}
                       <Link to={`/edit/${item.id}`}>Edit</Link>
-                      <button
-                        onClick={() => this.state.crypto.setDelete(item.id)}
-                      >
+                      <button onClick={() => stores.crypto.setDelete(item.id)}>
                         Delete
                       </button>
                     </>
                   </div>
-                  <GetComments
-                    id={item.id}
-                    store={this.props.stores.getComment}
-                  />
+                  <GetComments id={item.id} store={stores.getComment} />
                 </div>
               ))}
         </div>
@@ -63,6 +53,4 @@ class ListItem extends React.Component {
     );
   }
 }
-export default inject(({ stores }) => ({
-  stores,
-}))(observer(ListItem));
+export default observer(ListItem);

@@ -8,11 +8,15 @@ class OrderBy {
     makeAutoObservable(this);
   }
   setOrder(order) {
-    this.order = order;
-    this.counter = this.counter + 1;
-  }
-  setCounter() {
-    this.counter = 0;
+    if (order !== "") {
+      console.log("order");
+      this.order = order;
+      this.counter = this.counter + 1;
+    } else {
+      console.log("ciscenje");
+      this.order = "";
+      this.counter = 0;
+    }
   }
 }
 

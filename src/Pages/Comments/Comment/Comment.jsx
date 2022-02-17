@@ -1,12 +1,21 @@
 import React from "react";
-import { observer, inject } from "mobx-react";
+import { observer } from "mobx-react";
 import AddComment from "../AddComments/AddComment";
 import DeleteComment from "../DeleteComments/DeleteComment";
 import EditComment from "../EditComments/EditComment";
 
 class Comment extends React.Component {
+  constructor(props) {
+    super(props);
+    this.id = this.props.id;
+    props.stores.comments.setId(this.props.id);
+  }
+  componentWillUnmount() {
+    this.props.stores.comments.setId("");
+  }
   render() {
-    const stores = this.props.store.stores;
+    const stores = this.props.stores;
+    const id = this.props.id;
     return (
       <>
         {stores.delete.deleteAction && (
@@ -28,18 +37,14 @@ class Comment extends React.Component {
         )}
         <div className="CommentCoinName">{stores.comments.coinName}</div>
         <div className="CommentButtonWrapper">
-          <AddComment
-            id={this.props.store.id.commentId}
-            add={stores.add}
-            page={stores.page}
-          />
+          <AddComment id={id} add={stores.add} page={stores.page} />
           <div className="CoinCommentChoice">
             <button className="CoinCommentChoiceButton">Change coin</button>
             <div className="CoinCommentChoiceContent">
               {stores.comments.coinNames &&
                 stores.comments.coinNames.map(
                   (item, i) =>
-                    item.name != stores.comments.coinName && (
+                    item.name !== stores.comments.coinName && (
                       <a key={i} href={item.id}>
                         {item.name}
                       </a>
@@ -106,4 +111,4 @@ class Comment extends React.Component {
     );
   }
 }
-export default inject((provider) => ({ store: provider }))(observer(Comment));
+export default observer(Comment);

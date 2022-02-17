@@ -14,59 +14,91 @@ class CommentStore {
   coinName = "";
   coinNames = [];
   coinId = "";
-  test = 5;
+  id = "";
 
   constructor(props) {
     makeAutoObservable(this);
+    this.getCoinNames();
     reaction(
-      () => props.stores.page.pageNumber,
-      () =>
-        this.setPageComments(
-          props.stores.page.indexTo,
-          props.stores.page.indexFrom
-        )
-    );
-    reaction(
-      () => props.stores.page.pages.length,
-      (a, b) => {
-        if (b > a) {
-          this.setPageComments(
-            props.stores.page.indexTo - 5,
-            props.stores.page.indexFrom - 5
-          );
-          props.stores.page.setPageNumber(props.stores.page.pageNumber - 1);
+      //kada imam id, setaj komentare i ime
+      () => this.id,
+      () => {
+        if (this.id.length !== 0) {
+          this.getComments(this.id);
+          this.getCoinName(this.id);
         }
       }
     );
     reaction(
       () => this.comments,
-      () =>
-        this.setPageComments(
-          props.stores.page.indexTo,
-          props.stores.page.indexFrom
-        )
-    );
-
-    this.getComments(props.id.commentId);
-    this.getCoinNames();
-    this.getCoinName(props.id.commentId);
-  }
-  getComments(id) {
-    onSnapshot(
-      query(collection(db, "Comments"), where("coinId", "==", id)),
-      (doc) => {
-        const comments = doc.docs.map((item) => ({
-          ...item.data(),
-          id: item.id,
-        }));
-        runInAction(() => {
-          this.comments = comments;
-          if (!this.pageComments.length) {
-            this.setPageComments(5, 0);
-          }
-        });
+      (a, b) => {
+        if (!props.page.pages.length) {
+          //kada ima komentara, napravi paginaciju
+          props.page.setIndex();
+          props.page.getPages(this.comments.length);
+        }
+        if (a !== b && a.length === b.length) {
+          //setaj novu listu nakon edita(edit refresh)
+          this.setPageComments(props.page.indexTo, props.page.indexFrom);
+        }
+        if (a.length > b.length && b.length !== 0) {
+          //kada je list item veci, dodajem item i setaj mi novu listu, nove pages , novu pageListu
+          props.page.getPages(this.comments.length);
+          this.getComments(this.id);
+          this.setPageComments(props.page.indexTo, props.page.indexFrom);
+        }
+        if (a.length < b.length) {
+          //kada se briše iz liste, setaj novu listu i page listu(refresh da ostane isto)
+          props.page.getPages(this.comments.length);
+          this.getComments(this.id);
+          this.setPageComments(props.page.indexTo, props.page.indexFrom);
+        }
       }
     );
+    reaction(
+      //promjena pageComments na promjenu stranice
+      () => props.page.pageNumber,
+      () => {
+        this.setPageComments(props.page.indexTo, props.page.indexFrom);
+      }
+    );
+    reaction(
+      () => props.page.pages.length,
+      (a, b) => {
+        if (a < b) {
+          if (
+            //kada na zadnjoj stranici nakon brisanja treba maknuti stranicu
+            props.page.pageNumber !== 1 &&
+            props.page.pageNumber - 1 === props.page.pages.length
+          ) {
+            props.page.setPageNumber(props.page.pageNumber - 1);
+          }
+        }
+      }
+    );
+  }
+
+  setId(id) {
+    runInAction(() => (this.id = id));
+  }
+  getComments(id) {
+    if (id !== 0) {
+      onSnapshot(
+        query(collection(db, "Comments"), where("coinId", "==", id)),
+        (doc) => {
+          const comments = doc.docs.map((item) => ({
+            ...item.data(),
+            id: item.id,
+          }));
+          runInAction(() => {
+            this.comments = comments;
+            if (!this.pageComments.length) {
+              this.setPageComments(5, 0);
+            }
+          });
+        }
+      );
+    }
   }
   setEditAction() {
     this.editAction = false;
@@ -111,6 +143,7 @@ class CommentStore {
       }
       this.pageComments = pageComments;
     }
+    console.log(pageComments);
   }
 }
 

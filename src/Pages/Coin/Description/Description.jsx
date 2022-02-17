@@ -1,9 +1,9 @@
-import { inject, observer } from "mobx-react";
 import React from "react";
 
 class Description extends React.Component {
   render() {
     const order = this.props.order;
+
     return (
       <div className="Description">
         <button onClick={() => order.setOrder("name")}>Name</button>
@@ -14,4 +14,4 @@ class Description extends React.Component {
     );
   }
 }
-export default observer(Description);
+export default Description;

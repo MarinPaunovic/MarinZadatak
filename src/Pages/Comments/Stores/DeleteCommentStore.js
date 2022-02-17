@@ -2,7 +2,7 @@ import { doc, deleteDoc } from "firebase/firestore";
 import { makeAutoObservable } from "mobx";
 import { db } from "../../../db/firebase";
 
-class DeleteComment {
+class DeleteCommentStore {
   id = "";
   deleteAction = false;
   deleteConfirmation = false;
@@ -29,4 +29,4 @@ class DeleteComment {
   }
 }
 
-export default DeleteComment;
+export default DeleteCommentStore;

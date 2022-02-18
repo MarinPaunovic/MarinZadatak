@@ -11,7 +11,7 @@ class CommentInject extends React.Component {
       <>
         <Comment stores={stores} id={id} />
         <Pagination
-          page={stores.page}
+          onPageChange={stores.comments.setPageComments.bind(stores.comments)}
           length={stores.comments.comments.length}
         />
       </>

@@ -5,8 +5,10 @@ class Page {
   pages = [];
   indexFrom = null;
   indexTo = null;
-  constructor() {
+  constructor(props) {
     makeAutoObservable(this);
+    this.getPages(props.length);
+    this.setPageList = props.method;
   }
 
   clearPages() {
@@ -15,6 +17,7 @@ class Page {
   setPageNumber(page) {
     this.pageNumber = page;
     this.setIndex();
+    this.setPageList(this.indexTo, this.indexFrom);
   }
   setPages(number) {
     this.pages = number;

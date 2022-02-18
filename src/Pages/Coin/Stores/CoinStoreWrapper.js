@@ -6,7 +6,6 @@ import GetCommentStore from "./GetCommentsStore";
 
 class CoinStoreWrapper {
   constructor() {
-    this.page = new Page(this);
     this.order = new OrderBy(this);
     this.crypto = new Crypto(this);
     this.search = new SearchStore(this);

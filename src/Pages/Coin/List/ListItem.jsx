@@ -7,7 +7,6 @@ class ListItem extends React.Component {
     const stores = this.props.stores;
     return (
       <>
-        {console.log(stores.crypto.pageList)}
         <div className="List" id="ListId">
           {!stores.search.item
             ? stores.crypto.pageList.map((item, i) => (

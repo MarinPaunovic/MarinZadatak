@@ -6,7 +6,6 @@ import Page from "../../../Components/Pagination/PaginationStore";
 
 class CommentsStoreWrapper {
   constructor() {
-    this.page = new Page(this);
     this.comments = new CommentStore(this);
     this.edit = new EditCommentStore(this);
     this.add = new AddCommentStore(this);

@@ -29,53 +29,47 @@ class CommentStore {
         }
       }
     );
-    reaction(
-      () => this.comments,
-      (a, b) => {
-        if (!props.page.pages.length) {
-          //kada ima komentara, napravi paginaciju
-          props.page.setIndex();
-          props.page.getPages(this.comments.length);
-        }
-        if (a !== b && a.length === b.length) {
-          //setaj novu listu nakon edita(edit refresh)
-          this.setPageComments(props.page.indexTo, props.page.indexFrom);
-        }
-        if (a.length > b.length && b.length !== 0) {
-          //kada je list item veci, dodajem item i setaj mi novu listu, nove pages , novu pageListu
-          props.page.getPages(this.comments.length);
-          this.getComments(this.id);
-          this.setPageComments(props.page.indexTo, props.page.indexFrom);
-        }
-        if (a.length < b.length) {
-          //kada se briše iz liste, setaj novu listu i page listu(refresh da ostane isto)
-          props.page.getPages(this.comments.length);
-          this.getComments(this.id);
-          this.setPageComments(props.page.indexTo, props.page.indexFrom);
-        }
-      }
-    );
-    reaction(
-      //promjena pageComments na promjenu stranice
-      () => props.page.pageNumber,
-      () => {
-        this.setPageComments(props.page.indexTo, props.page.indexFrom);
-      }
-    );
-    reaction(
-      () => props.page.pages.length,
-      (a, b) => {
-        if (a < b) {
-          if (
-            //kada na zadnjoj stranici nakon brisanja treba maknuti stranicu
-            props.page.pageNumber !== 1 &&
-            props.page.pageNumber - 1 === props.page.pages.length
-          ) {
-            props.page.setPageNumber(props.page.pageNumber - 1);
-          }
-        }
-      }
-    );
+    //   reaction(
+    //     () => this.comments,
+    //     (a, b) => {
+    //       if (!props.page.pages.length) {
+    //         //kada ima komentara, napravi paginaciju
+    //         props.page.setIndex();
+    //         props.page.getPages(this.comments.length);
+    //       }
+    //       if (a !== b && a.length === b.length) {
+    //         //setaj novu listu nakon edita(edit refresh)
+    //         this.setPageComments(props.page.indexTo, props.page.indexFrom);
+    //       }
+    //       if (a.length > b.length && b.length !== 0) {
+    //         //kada je list item veci, dodajem item i setaj mi novu listu, nove pages , novu pageListu
+    //         props.page.getPages(this.comments.length);
+    //         this.getComments(this.id);
+    //         this.setPageComments(props.page.indexTo, props.page.indexFrom);
+    //       }
+    //       if (a.length < b.length) {
+    //         //kada se briše iz liste, setaj novu listu i page listu(refresh da ostane isto)
+    //         props.page.getPages(this.comments.length);
+    //         this.getComments(this.id);
+    //         this.setPageComments(props.page.indexTo, props.page.indexFrom);
+    //       }
+    //     }
+    //   );
+    //
+    //   reaction(
+    //     () => props.page.pages.length,
+    //     (a, b) => {
+    //       if (a < b) {
+    //         if (
+    //           //kada na zadnjoj stranici nakon brisanja treba maknuti stranicu
+    //           props.page.pageNumber !== 1 &&
+    //           props.page.pageNumber - 1 === props.page.pages.length
+    //         ) {
+    //           props.page.setPageNumber(props.page.pageNumber - 1);
+    //         }
+    //       }
+    //     }
+    //   );
   }
 
   setId(id) {

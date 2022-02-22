@@ -10,9 +10,6 @@ class Comment extends React.Component {
     this.id = this.props.id;
     props.stores.comments.setId(this.props.id);
   }
-  componentWillUnmount() {
-    this.props.stores.comments.setId("");
-  }
   render() {
     const stores = this.props.stores;
     const id = this.props.id;
@@ -35,21 +32,27 @@ class Comment extends React.Component {
             </div>
           </div>
         )}
-        <div className="CommentCoinName">{stores.comments.coinName}</div>
+        <div
+          className="CommentCoinName"
+          style={
+            stores.comments.coinName ? undefined : { visibility: "hidden" }
+          }
+        >
+          {stores.comments.coinName ? stores.comments.coinName : "blank"}
+        </div>
         <div className="CommentButtonWrapper">
           <AddComment id={id} add={stores.add} page={stores.page} />
           <div className="CoinCommentChoice">
             <button className="CoinCommentChoiceButton">Change coin</button>
             <div className="CoinCommentChoiceContent">
-              {stores.comments.coinNames &&
-                stores.comments.coinNames.map(
-                  (item, i) =>
-                    item.name !== stores.comments.coinName && (
-                      <a key={i} href={item.id}>
-                        {item.name}
-                      </a>
-                    )
-                )}
+              {stores.comments.coinNames.map(
+                (item, i) =>
+                  item.name !== stores.comments.coinName && (
+                    <a key={i} href={item.id}>
+                      {item.name}
+                    </a>
+                  )
+              )}
             </div>
           </div>
         </div>

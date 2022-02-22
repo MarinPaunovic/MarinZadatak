@@ -2,7 +2,6 @@ import EditCommentStore from "./EditCommentStore";
 import CommentStore from "./CommentStore";
 import AddCommentStore from "./AddCommentStore";
 import DeleteCommentStore from "./DeleteCommentStore";
-import Page from "../../../Components/Pagination/PaginationStore";
 
 class CommentsStoreWrapper {
   constructor() {

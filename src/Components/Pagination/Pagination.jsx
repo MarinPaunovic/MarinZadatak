@@ -5,12 +5,23 @@ class Pagination extends React.Component {
   constructor(props) {
     super(props);
     this.page = new Page({
-      method: this.props.onPageChange,
+      onChange: this.props.onPageChange,
+      index: this.props.index,
       length: this.props.length,
     });
   }
-  componentWillUnmount() {
-    this.page.setPageNumber(1);
+  componentDidUpdate(prev) {
+    if (prev.length > this.props.length && this.props.length % 5 == 0) {
+      if (this.page.pages.length == this.page.pageNumber) {
+        this.page.getPages(this.props.length);
+        this.page.setPageNumber(this.page.pageNumber - 1);
+      } else {
+        this.page.getPages(this.props.length);
+      }
+    }
+    if (prev.length < this.props.length && this.props.length % 5 == 1) {
+      this.page.getPages(this.props.length);
+    }
   }
   render() {
     const page = this.page;

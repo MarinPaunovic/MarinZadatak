@@ -1,52 +1,47 @@
 import {
-  collection,
   deleteDoc,
   doc,
   onSnapshot,
   collection,
   where,
+  addDoc,
   getDocs,
   query,
+  updateDoc,
+  getDoc,
+  orderBy,
 } from "firebase/firestore";
 import { db } from "../db/firebase";
 class DatabaseService {
-  async getList() {
-    onSnapshot(
-      query(
-        collection(db, "Crypto"),
-        orderBy(!order ? "marketCap" : order, orderCounter % 2 ? "desc" : "asc")
-      ),
-      (doc) => {
-        const list = doc.docs.map((item) => ({
-          ...item.data(),
-          id: item.id,
-        }));
-        runInAction(() => {
-          this.list = list;
-        });
-      }
-    );
+  constructor(props) {
+    this.collection = props;
   }
 
-  setEdit(id, editComment) {
-    updateDoc(doc(db, this.collection, id), {
-      comment: editComment,
-    });
+  async getOne(id) {
+    return await getDoc(doc(db, this.collection, id));
   }
-  setAdd(coll, content) {
-    addDoc(collection(db, coll), {
-      content,
-    });
+  async getAll() {
+    return await getDocs(collection(db, this.collection));
   }
 
-  setDelete(id, double) {
+  setEdit(id, data) {
+    updateDoc(doc(db, this.collection, id), data);
+  }
+  setAdd(content) {
+    addDoc(collection(db, this.collection), content);
+  }
+
+  async setDelete(id, doubleColl, ref) {
     deleteDoc(doc(db, this.collection, id));
-    if (double) {
-      const collRef = collection(db, "Comments");
-      const q = query(collRef, where("coinId", "==", id));
-      getDocs(q).then((value) =>
-        value.docs.map((item) => deleteDoc(doc(db, "Comments", item.id)))
-      );
+    if (doubleColl) {
+      const collRef = collection(db, doubleColl);
+      const q = query(collRef, where(ref, "==", id));
+      const value = await getDocs(q);
+      value.docs.map((item) => {
+        deleteDoc(doc(db, doubleColl, item.id));
+      });
     }
   }
 }
+export const coins = new DatabaseService("Crypto");
+export const comments = new DatabaseService("Comments");

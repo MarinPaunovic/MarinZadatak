@@ -1,6 +1,5 @@
 import { makeAutoObservable } from "mobx";
-import { updateDoc, doc } from "firebase/firestore";
-import { db } from "../../../db/firebase";
+import { comments } from "../../../Services/DatabaseService";
 
 class EditCommentStore {
   editComment = "";
@@ -21,9 +20,8 @@ class EditCommentStore {
     if (!this.editComment) {
       this.setEditCommentId("");
     } else {
-      updateDoc(doc(db, "Comments", id), {
-        comment: this.editComment,
-      });
+      let data = { comment: this.editComment };
+      comments.setEdit(id, data);
     }
   }
 }

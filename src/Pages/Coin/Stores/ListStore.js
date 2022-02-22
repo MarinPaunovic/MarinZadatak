@@ -1,16 +1,7 @@
 import { makeAutoObservable, runInAction, reaction } from "mobx";
 import { db } from "../../../db/firebase";
-import {
-  onSnapshot,
-  collection,
-  doc,
-  deleteDoc,
-  orderBy,
-  query,
-  where,
-  getDocs,
-} from "firebase/firestore";
-
+import { onSnapshot, collection, orderBy, query } from "firebase/firestore";
+import { coins } from "../../../Services/DatabaseService";
 class Crypto {
   list = [];
   searchList = [];
@@ -18,15 +9,29 @@ class Crypto {
   action = false;
   searchValue = true;
   counter = 0;
+  orderBy = undefined;
+  indexTo = 5;
+  indexFrom = 0;
 
-  constructor(props) {
-    makeAutoObservable(this);
+  constructor() {
+    makeAutoObservable(this, {}, { autoBind: true });
     this.getList();
-    //reakcija na listu
     reaction(
       () => this.list,
-      () => this.setPageList(5, 0)
+      (curr, prev) => {
+        if (prev.length === 0 && this.pageList.length === 0) {
+          this.setPageList(5, 0);
+        }
+        if (prev.length > curr.length && this.orderBy) {
+          this.counter = 0;
+          this.setOrder(this.orderBy);
+        } else this.setPageList(this.indexTo, this.indexFrom);
+      }
     );
+  }
+  setIndex(iF, iT) {
+    this.indexTo = iT;
+    this.indexFrom = iF;
   }
   setBackCounter() {
     this.counter = 0;
@@ -42,8 +47,139 @@ class Crypto {
   }
 
   setOrder(orderBy) {
-    this.counter = this.counter + 1;
-    this.getList(orderBy, this.counter);
+    if (!this.orderBy) {
+      this.orderBy = orderBy;
+    }
+    if (this.orderBy && this.orderBy !== orderBy) {
+      this.counter = 0;
+      this.orderBy = orderBy;
+    }
+    switch (this.orderBy) {
+      case "name":
+        if (this.counter % 2 === 0) {
+          this.counter = this.counter + 1;
+          this.list.sort((a, b) => {
+            let nameA = a.name.toUpperCase();
+            let nameB = b.name.toUpperCase();
+            if (nameA < nameB) {
+              return -1;
+            }
+            if (nameA > nameB) {
+              return 1;
+            }
+            return 0;
+          });
+          this.setPageList(this.indexTo, this.indexFrom);
+        } else {
+          this.counter = this.counter + 1;
+          this.list.sort((a, b) => {
+            let nameA = a.name.toUpperCase();
+            let nameB = b.name.toUpperCase();
+            if (nameA < nameB) {
+              return 1;
+            }
+            if (nameA > nameB) {
+              return -1;
+            }
+            return 0;
+          });
+          this.setPageList(this.indexTo, this.indexFrom);
+        }
+        break;
+      case "tag":
+        if (this.counter % 2 === 0) {
+          this.counter = this.counter + 1;
+          this.list.sort((a, b) => {
+            let tagA = a.tag.toUpperCase();
+            let tagB = b.tag.toUpperCase();
+            if (tagA < tagB) {
+              return -1;
+            }
+            if (tagA > tagB) {
+              return 1;
+            }
+            return 0;
+          });
+          this.setPageList(this.indexTo, this.indexFrom);
+        } else {
+          this.counter = this.counter + 1;
+          this.list.sort((a, b) => {
+            let tagA = a.tag.toUpperCase();
+            let tagB = b.tag.toUpperCase();
+            if (tagA < tagB) {
+              return 1;
+            }
+            if (tagA > tagB) {
+              return -1;
+            }
+            return 0;
+          });
+          this.setPageList(this.indexTo, this.indexFrom);
+        }
+        break;
+      case "price":
+        if (this.counter % 2 === 0) {
+          this.counter = this.counter + 1;
+          this.list.sort((a, b) => {
+            let priceA = a.price;
+            let priceB = b.price;
+            if (priceA < priceB) {
+              return -1;
+            }
+            if (priceA > priceB) {
+              return 1;
+            }
+            return 0;
+          });
+          this.setPageList(this.indexTo, this.indexFrom);
+        } else {
+          this.counter = this.counter + 1;
+          this.list.sort((a, b) => {
+            let priceA = a.price;
+            let priceB = b.price;
+            if (priceA < priceB) {
+              return 1;
+            }
+            if (priceA > priceB) {
+              return -1;
+            }
+            return 0;
+          });
+          this.setPageList(this.indexTo, this.indexFrom);
+        }
+        break;
+      case "marketCap":
+        if (this.counter % 2 === 0) {
+          this.counter = this.counter + 1;
+          this.list.sort((a, b) => {
+            let marketCapA = a.marketCap;
+            let marketCapB = b.marketCap;
+            if (marketCapA < marketCapB) {
+              return -1;
+            }
+            if (marketCapA > marketCapB) {
+              return 1;
+            }
+            return 0;
+          });
+          this.setPageList(this.indexTo, this.indexFrom);
+        } else {
+          this.counter = this.counter + 1;
+          this.list.sort((a, b) => {
+            let marketCapA = a.marketCap;
+            let marketCapB = b.marketCap;
+            if (marketCapA < marketCapB) {
+              return 1;
+            }
+            if (marketCapA > marketCapB) {
+              return -1;
+            }
+            return 0;
+          });
+          this.setPageList(this.indexTo, this.indexFrom);
+        }
+        break;
+    }
   }
 
   setPageList(iT, iF) {
@@ -78,12 +214,10 @@ class Crypto {
       }
     }
   }
-  getList(order, orderCounter) {
+
+  getList() {
     onSnapshot(
-      query(
-        collection(db, "Crypto"),
-        orderBy(!order ? "marketCap" : order, orderCounter % 2 ? "desc" : "asc")
-      ),
+      query(collection(db, "Crypto"), orderBy("marketCap", "desc")),
       (doc) => {
         const list = doc.docs.map((item) => ({
           ...item.data(),
@@ -95,14 +229,10 @@ class Crypto {
       }
     );
   }
+
   setDelete(id) {
-    deleteDoc(doc(db, "Crypto", id));
-    const collRef = collection(db, "Comments");
-    const q = query(collRef, where("coinId", "==", id));
-    getDocs(q).then((value) =>
-      value.docs.map((item) => deleteDoc(doc(db, "Comments", item.id)))
-    );
-    this.searchValue = false;
+    coins.setDelete(id, "Comments", "coinId");
+    this.searchList = this.searchList.filter((value) => value.id !== id);
   }
 }
 export default Crypto;

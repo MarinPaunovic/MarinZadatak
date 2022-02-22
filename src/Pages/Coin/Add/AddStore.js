@@ -3,7 +3,7 @@ import AddStore from "./AddStore";
 import Timer from "./Timer";
 import { db } from "../../../db/firebase";
 import { collection, addDoc } from "firebase/firestore";
-
+import { coins } from "../../../Services/DatabaseService";
 class AddNewList {
   name = "";
   tag = "";
@@ -50,7 +50,7 @@ class AddNewList {
     e.preventDefault();
     if (this.name && this.tag && this.price && this.marketCap) {
       if (!isNaN(this.price) && !isNaN(this.marketCap)) {
-        addDoc(collection(db, "Crypto"), {
+        coins.setAdd({
           name: this.name,
           tag: this.tag,
           price: +this.price,

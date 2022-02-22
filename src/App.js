@@ -1,5 +1,5 @@
 import React from "react";
-import Homepage from "./Pages/Coin/Homepage";
+import Homepage from "./Pages/Coin/Homepage/Homepage";
 import Add from "./Pages/Coin/Add/Add.jsx";
 import Navbar from "./Layout/Navbar";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
@@ -14,10 +14,7 @@ import { observer } from "mobx-react";
 
 function App() {
   return (
-    <Provider
-      coinStore={new CoinStoreWrapper()}
-      commentStore={new CommentsStoreWrapper()}
-    >
+    <Provider coinStore={CoinStoreWrapper} commentStore={CommentsStoreWrapper}>
       <Router>
         <Navbar />
         <Routes>

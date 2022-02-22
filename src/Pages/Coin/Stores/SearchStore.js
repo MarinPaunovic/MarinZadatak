@@ -1,29 +1,21 @@
-import { makeAutoObservable, reaction } from "mobx";
+import { makeAutoObservable } from "mobx";
 
 class SearchStore {
   item = "";
-  searchList = [];
 
   constructor(props) {
     makeAutoObservable(this);
-    reaction(
-      () => this.item,
-      () => {
-        if (this.item !== "") {
-          props.page.getPages(0);
-        } else props.page.getPages(props.crypto.list.length);
-      }
-    );
+    this.crypto = props.crypto;
   }
 
   setItem(searchItem) {
     this.item = searchItem;
   }
-  setSearch(item, list) {
+  setSearch(item) {
     this.setItem(item);
     let newList = [];
     let test = 0;
-    list.filter((value) =>
+    this.crypto.list.filter((value) =>
       value.name.toLowerCase().includes(item.toLocaleLowerCase()) ||
       value.tag.toLowerCase().includes(item.toLocaleLowerCase())
         ? (newList.push({
@@ -33,9 +25,9 @@ class SearchStore {
             marketCap: value.marketCap,
             id: value.id,
           }),
-          (this.searchList = newList),
+          (this.crypto.searchList = newList),
           test++)
-        : test === 0 && (this.searchList = newList)
+        : test === 0 && (this.crypto.searchList = newList)
     );
   }
 }

@@ -1,7 +1,7 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { db } from "../../../db/firebase";
-
+import { coins } from "../../../Services/DatabaseService";
 class EditStore {
   itemId = "";
   name = "";
@@ -42,14 +42,12 @@ class EditStore {
   setAction() {
     this.action = false;
   }
-  getEdit(id) {
-    getDoc(doc(db, "Crypto", id)).then((value) => {
-      this.setName(value.data().name);
-      this.setTag(value.data().tag);
-      this.setPrice(value.data().price);
-      this.setMarketCap(value.data().marketCap);
-    });
-    runInAction(() => (this.action = true));
+  async getEdit(id) {
+    const edit = await coins.getOne(id);
+    this.setName(edit.data().name);
+    this.setTag(edit.data().tag);
+    this.setPrice(edit.data().price);
+    this.setMarketCap(edit.data().marketCap);
   }
   setEdit(id) {
     if (!this.name || !this.tag) {
@@ -63,12 +61,13 @@ class EditStore {
       if (isNaN(this.price, this.marketCap)) {
         alert("Price and  Marketcap must be a number");
       } else {
-        updateDoc(doc(db, "Crypto", id), {
+        let data = {
           name: this.name,
           tag: this.tag,
           price: +this.price,
           marketCap: +this.marketCap,
-        });
+        };
+        coins.setEdit(id, data);
         setTimeout(() => {
           runInAction(() => (this.editCompleted = true));
         }, 200);

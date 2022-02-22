@@ -1,6 +1,5 @@
 import { makeAutoObservable } from "mobx";
-import { addDoc, collection } from "firebase/firestore";
-import { db } from "../../../db/firebase";
+import { comments } from "../../../Services/DatabaseService";
 
 class AddCommentStore {
   content = "";
@@ -21,7 +20,7 @@ class AddCommentStore {
     this.toggle = !this.toggle;
   }
   addComment(id) {
-    addDoc(collection(db, "Comments"), {
+    let data = {
       coinId: id,
       comment: this.content,
       createdAt: new Date().toLocaleDateString(undefined, {
@@ -31,7 +30,8 @@ class AddCommentStore {
         hour: "2-digit",
         minute: "2-digit",
       }),
-    });
+    };
+    comments.setAdd(data);
     this.addAction = true;
   }
 }

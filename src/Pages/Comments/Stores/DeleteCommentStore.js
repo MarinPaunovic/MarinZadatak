@@ -1,6 +1,5 @@
-import { doc, deleteDoc } from "firebase/firestore";
 import { makeAutoObservable } from "mobx";
-import { db } from "../../../db/firebase";
+import { comments } from "../../../Services/DatabaseService";
 
 class DeleteCommentStore {
   id = "";
@@ -23,7 +22,7 @@ class DeleteCommentStore {
     this.id = id;
   }
   setDelete(id) {
-    deleteDoc(doc(db, "Comments", id));
+    comments.setDelete(id);
     this.deleteAction = !this.deleteAction;
     this.deleteConfirmation = true;
   }

@@ -11,15 +11,15 @@ class Pagination extends React.Component {
     });
   }
   componentDidUpdate(prev) {
-    if (prev.length > this.props.length && this.props.length % 5 == 0) {
-      if (this.page.pages.length == this.page.pageNumber) {
+    if (prev.length > this.props.length && this.props.length % 5 === 0) {
+      if (this.page.pages.length === this.page.pageNumber) {
         this.page.getPages(this.props.length);
         this.page.setPageNumber(this.page.pageNumber - 1);
       } else {
         this.page.getPages(this.props.length);
       }
     }
-    if (prev.length < this.props.length && this.props.length % 5 == 1) {
+    if (prev.length < this.props.length && this.props.length % 5 === 1) {
       this.page.getPages(this.props.length);
     }
   }
@@ -35,7 +35,7 @@ class Pagination extends React.Component {
                 page.setPageNumber(index);
               }}
               style={
-                page.pageNumber == index
+                page.pageNumber === index
                   ? {
                       borderStyle: "solid",
                       borderWidth: "0.7px",

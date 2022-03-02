@@ -1,10 +1,4 @@
-import {
-  query,
-  getDocs,
-  collection,
-  where,
-  onSnapshot,
-} from "firebase/firestore";
+import { query, collection, where, onSnapshot } from "firebase/firestore";
 import { makeAutoObservable, reaction, runInAction } from "mobx";
 import { db } from "../../../db/firebase";
 import { coins } from "../../../Services/DatabaseService";
@@ -75,11 +69,10 @@ class CommentStore {
     this.editAction = false;
   }
   async getCoinName(id) {
-    let name;
     let getName = await coins.getAll();
-    getName.docs.map((item) => {
+    const name = getName.docs.map((item) => {
       if (item.id === id) {
-        name = item.data().name;
+        return item.data().name;
       }
       return;
     });

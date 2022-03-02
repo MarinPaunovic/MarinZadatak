@@ -1,6 +1,4 @@
 import { makeAutoObservable, runInAction } from "mobx";
-import { doc, getDoc, updateDoc } from "firebase/firestore";
-import { db } from "../../../db/firebase";
 import { coins } from "../../../Services/DatabaseService";
 class EditStore {
   itemId = "";

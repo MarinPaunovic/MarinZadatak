@@ -1,4 +1,4 @@
-import { inject, observer } from "mobx-react";
+import { observer } from "mobx-react";
 import React from "react";
 import EditStore from "./EditStore";
 

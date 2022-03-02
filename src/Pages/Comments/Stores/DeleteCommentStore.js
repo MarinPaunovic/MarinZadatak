@@ -9,9 +9,6 @@ class DeleteCommentStore {
   constructor() {
     makeAutoObservable(this);
   }
-  setDeleteConfirmation() {
-    this.deleteConfirmation = false;
-  }
   setDeleteAction(bool) {
     this.deleteAction = bool;
   }

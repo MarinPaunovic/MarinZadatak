@@ -1,8 +1,4 @@
 import { makeAutoObservable } from "mobx";
-import AddStore from "./AddStore";
-import Timer from "./Timer";
-import { db } from "../../../db/firebase";
-import { collection, addDoc } from "firebase/firestore";
 import { coins } from "../../../Services/DatabaseService";
 class AddNewList {
   name = "";

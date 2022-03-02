@@ -10,7 +10,7 @@ class GetComments extends React.Component {
           to={`/comments/${this.props.id}`}
           className="GetCommentButton"
           style={
-            this.props.id == this.props.store.coinId
+            this.props.id === this.props.store.coinId
               ? { display: "block" }
               : { display: "none" }
           }
@@ -25,7 +25,7 @@ class GetComments extends React.Component {
           className="GetComment"
         >
           <i className="material-icons">
-            {this.props.id == this.props.store.coinId
+            {this.props.id === this.props.store.coinId
               ? "arrow_drop_up"
               : "arrow_drop_down"}
           </i>

@@ -1,7 +1,6 @@
 import {
   deleteDoc,
   doc,
-  onSnapshot,
   collection,
   where,
   addDoc,
@@ -9,7 +8,6 @@ import {
   query,
   updateDoc,
   getDoc,
-  orderBy,
 } from "firebase/firestore";
 import { db } from "../db/firebase";
 class DatabaseService {
@@ -37,9 +35,7 @@ class DatabaseService {
       const collRef = collection(db, doubleColl);
       const q = query(collRef, where(ref, "==", id));
       const value = await getDocs(q);
-      value.docs.map((item) => {
-        deleteDoc(doc(db, doubleColl, item.id));
-      });
+      value.docs.map((item) => deleteDoc(doc(db, doubleColl, item.id)));
     }
   }
 }
